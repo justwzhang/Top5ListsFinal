@@ -1,6 +1,9 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
-import { Typography } from '@mui/material'
+import AuthContext from '../auth'
+import {Fab, Typography } from '@mui/material'
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 
 /*
     Our Status bar React component goes at the bottom of our UI.
@@ -9,13 +12,39 @@ import { Typography } from '@mui/material'
 */
 function Statusbar() {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
+    function handleCreateNewList() {
+        store.createNewList();
+    }
     let text ="";
     if (store.currentList)
         text = store.currentList.name;
-    return (
-        <div id="top5-statusbar">
-            <Typography variant="h4">{text}</Typography>
+    
+    let statusbar = <div id="top5-statusbar"></div>
+    if(auth.loggedIn){
+        statusbar = <div id="top5-statusbar">
+            <IconButton 
+            color="primary" 
+            aria-label="add"
+            id="add-list-button"
+            onClick={handleCreateNewList}
+            style = {{
+                backgroundColor: "transparent",
+                color: "black"
+                // opacity: "0.1"
+            }}
+            >
+                <AddIcon  style ={{
+                    fontSize: "40pt"
+                }}/>
+            </IconButton>
+            Your Lists
         </div>
+    }else{
+        statusbar = <div></div>
+    }
+    return (
+        statusbar
     );
 }
 
