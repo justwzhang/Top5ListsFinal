@@ -54,7 +54,8 @@ logInUser = async (req, res) => {
                     user: {
                         firstName: user.firstName,
                         lastName: user.lastName,
-                        email: user.email
+                        email: user.email,
+                        userName: user.user
                     }
                 }).send();
             }else{
@@ -87,8 +88,8 @@ getLoggedIn = async (req, res) => {
 
 registerUser = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, passwordVerify } = req.body;
-        if (!firstName || !lastName || !email || !password || !passwordVerify) {
+        const { firstName, lastName,user,  email, password, passwordVerify } = req.body;
+        if (!firstName || !lastName || !user || !email || !password || !passwordVerify) {
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
@@ -108,6 +109,7 @@ registerUser = async (req, res) => {
                 })
         }
         const existingUser = await User.findOne({ email: email });
+        //const existingUser2 = await User.findOne({ email: user });
         if (existingUser) {
             return res
                 .status(400)
@@ -116,13 +118,20 @@ registerUser = async (req, res) => {
                     errorMessage: "An account with this email address already exists."
                 })
         }
-
+        // if (existingUser2) {
+        //     return res
+        //         .status(400)
+        //         .json({
+        //             success: false,
+        //             errorMessage: "An account with this user name already exists."
+        //         })
+        // }
         const saltRounds = 10;
         const salt = await bcrypt.genSalt(saltRounds);
         const passwordHash = await bcrypt.hash(password, salt);
 
         const newUser = new User({
-            firstName, lastName, email, passwordHash
+            firstName, lastName, user, email, passwordHash
         });
         const savedUser = await newUser.save();
 

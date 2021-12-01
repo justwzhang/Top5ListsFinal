@@ -31,12 +31,16 @@ const HomeScreen = () => {
     let listCard = "";
     if (store) {
         listCard = 
-            <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
+            <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}
+            style ={{
+                backgroundColor: "#c4c4c4"
+            }}
+            >
             {
-                store.idNamePairs.map((pair) => (
+                store.viewedLists.map((list) => (
                     <ListCard
-                        key={pair._id}
-                        idNamePair={pair}
+                        key={list._id}
+                        list={list}
                         selected={false}
                     />
                 ))
@@ -82,7 +86,6 @@ const HomeScreen = () => {
                     listCard
                 }
             </div>
-            {/* <Statusbar /> */}
         </div>)
 }
 

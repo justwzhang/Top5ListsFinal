@@ -19,7 +19,8 @@ function AuthContextProvider(props) {
         user: null,
         loggedIn: false,
         errorMessage: null,
-        error: false
+        error: false,
+        isGuest: false
     });
     const history = useHistory();
 
@@ -36,8 +37,8 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: payload.loggedIn,
                     errorMessage: null,
-                    error: false
-
+                    error: false,
+                    isGuest: false
                 });
             }
             case AuthActionType.REGISTER_USER: {
@@ -45,7 +46,8 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: true,
                     errorMessage: null,
-                    error: false
+                    error: false,
+                    isGuest: false
                 })
             }
             case AuthActionType.LOGIN_USER:{
@@ -53,7 +55,8 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: true,
                     errorMessage: null,
-                    error: false
+                    error: false,
+                    isGuest: false
                 })
             }
             case AuthActionType.SET_ERROR:{
@@ -61,7 +64,8 @@ function AuthContextProvider(props) {
                     user:auth.user,
                     loggedIn: auth.loggedIn,
                     errorMessage: payload.errorMessage,
-                    error: payload.error
+                    error: payload.error,
+                    isGuest: false
                 })
             }
             case AuthActionType.LOGOUT_USER:{
@@ -69,7 +73,8 @@ function AuthContextProvider(props) {
                     user:null,
                     loggedIn: false,
                     errorMessage: null,
-                    error:false
+                    error:false,
+                    isGuest: false
                 });
             }
             default:
