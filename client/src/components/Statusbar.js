@@ -24,15 +24,10 @@ function Statusbar() {
     if(auth.loggedIn){
         statusbar = <div id="top5-statusbar">
             <IconButton 
-            color="primary" 
             aria-label="add"
             id="add-list-button"
             onClick={handleCreateNewList}
-            style = {{
-                backgroundColor: "transparent",
-                color: "black"
-                // opacity: "0.1"
-            }}
+            disabled = {store.currentList}
             >
                 <AddIcon  style ={{
                     fontSize: "40pt"

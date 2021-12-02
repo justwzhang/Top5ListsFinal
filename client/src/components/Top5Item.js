@@ -5,6 +5,9 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
+import { typography } from "@mui/system";
+
+import Button from '@mui/material/Button';
 /*
     This React component represents a single item in our
     Top 5 List, which can be edited or moved around.
@@ -16,6 +19,7 @@ function Top5Item(props) {
     const [editActive, setEditActive] = useState(false);
     const [draggedTo, setDraggedTo] = useState(0);
     const [newText, setText] = useState(props.text);
+    let { index } = props;
 
     function handleDragStart(event, targetId) {
         event.dataTransfer.setData("item", targetId);
@@ -65,10 +69,11 @@ function Top5Item(props) {
         }
     }
     function handleUpdateText(event) {
-        setText(event.target.value);
+        store.updateCurrentListItem(index, event.target.value)
+        //store.currentList.items[index] = event.target.value
     }
     
-    let { index } = props;
+
 
     let itemClass = "top5-item";
     if (draggedTo) {
@@ -110,24 +115,26 @@ function Top5Item(props) {
             </ListItem>
 
 
-if (editActive) {
+if (store.currentList) {
     ItemElement =
-        <TextField
-            margin="normal"
-            required
-            fullWidth
-            id={"item-" + (index+1)}
-            label="Top 5 List item"
-            name="name"
-            autoComplete="Top 5 List item"
-            className='list-card'
-            onKeyPress={handleKeyPress}
-            onChange={handleUpdateText}
-            defaultValue={props.text}
-            inputProps={{style: {fontSize: 48}}}
-            InputLabelProps={{style: {fontSize: 24}}}
-            autoFocus
-        />
+        <div style = {{height:"20%"}}>
+            <h6 style={{fontSize:"34pt", backgroundColor:"white", width:"5%", textAlign:"center", display: "inline"}}>{index+1}</h6>
+            <TextField
+                //margin="normal"
+                //fullWidth
+                size="small" 
+                id={"item-" + (index+1)}
+                name="name"
+                //autoComplete="Top 5 List item"
+                // className='list-card'
+                onKeyPress={handleKeyPress}
+                onChange={handleUpdateText}
+                defaultValue={props.text}
+                inputProps={{style: {fontSize: 24}}}
+                autoFocus
+                style={{backgroundColor:"white", width:"80%"}}
+            />
+        </div>
 }
     return ItemElement;
 }

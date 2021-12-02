@@ -29,11 +29,10 @@ function ListCard(props) {
     const { list } = props;
     // const [list, setList] = useState(store.getListById(idNamePair._id))
 
-    console.log(list)
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
             // CHANGE THE CURRENT LIST
-            store.setCurrentList(id);
+            
             // console.log(list)
         }
     }
@@ -51,11 +50,10 @@ function ListCard(props) {
     function handleToggleDislike(){
 
     }
-
     function toggleEdit() {
         let newActive = !editActive;
         if (newActive) {
-            store.setIsListNameEditActive();
+            store.setCurrentList(list._id);
         }
         setEditActive(newActive);
     }
@@ -75,10 +73,8 @@ function ListCard(props) {
     function handleUpdateText(event) {
         setText(event.target.value);
     }
-    let editButton = <div/>
-    if(!list.published){
-        editButton = <Button variant="text">Edit</Button>
-    }
+    
+    //base List for home lists unpublished
     let cardElement =
         <ListItem
             id={list._id}
@@ -93,12 +89,12 @@ function ListCard(props) {
                 fontSize: '20pt',
                 width: '100%',
                 borderRadius: "20px",
-                backgroundColor: "white"
+                backgroundColor: "beige"
             }}
         >
                 <Box sx={{ p: 1, flexGrow: 1 }}>{list.name} <br/> 
                     <div style={{fontSize: '10pt'}}>By: {list.ownerUser}</div><br/>
-                    <Button variant="text">Edit</Button>
+                    <Button onClick={toggleEdit} variant="text">Edit</Button>
                 </Box>
                 <Box sx={{ p: 1 }}>
                     <IconButton onClick={handleToggleLike} aria-label='edit'>
@@ -122,25 +118,50 @@ function ListCard(props) {
                     </div>
                 </Box>
         </ListItem>
-
-    if (editActive) {
+    //list item for home list that is published
+    if(list.published){
         cardElement =
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id={"list-" + list._id}
-                label="Top 5 List Name"
-                name="name"
-                autoComplete="Top 5 List Name"
-                className='list-card'
-                onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
-                defaultValue={list.name}
-                inputProps={{style: {fontSize: 48}}}
-                InputLabelProps={{style: {fontSize: 24}}}
-                autoFocus
-            />
+            <ListItem
+                id={list._id}
+                key={list._id}
+                sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+                button
+                onClick={(event) => {
+                    handleLoadList(event, list._id)
+                }
+                }
+                style={{
+                    fontSize: '20pt',
+                    width: '100%',
+                    borderRadius: "20px",
+                    backgroundColor: "#d4d4f5"
+                }}
+            >
+                    <Box sx={{ p: 1, flexGrow: 1 }}>{list.name} <br/> 
+                        <div style={{fontSize: '10pt'}}>By: {list.ownerUser}</div><br/>
+                    </Box>
+                    <Box sx={{ p: 1 }}>
+                        <IconButton onClick={handleToggleLike} aria-label='edit'>
+                            <ThumbUpOffAltIcon style={{fontSize:'30pt'}} />
+                            <div style={{fontSize: '10pt'}}>{list.likes}</div>
+                        </IconButton>
+
+                        <IconButton onClick={handleToggleDislike} aria-label='edit'>
+                            <ThumbDownOffAltIcon style={{fontSize:'30pt'}} />
+                            <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
+                        </IconButton>
+
+                        <IconButton onClick={(event) => {handleDeleteList(event, list._id)}} aria-label='delete'>
+                            <DeleteIcon style={{fontSize:'30pt'}} />
+                        </IconButton>
+
+                        <br/><div> Views:{list.views} 
+                            <IconButton onClick={handleOpenList} aria-label='edit'>
+                                <KeyboardArrowDownIcon style={{fontSize:'30pt', alignItems: "left"}} />
+                            </IconButton>
+                        </div>
+                    </Box>
+            </ListItem>
     }
     return (
         cardElement

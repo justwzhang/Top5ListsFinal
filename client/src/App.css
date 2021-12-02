@@ -171,6 +171,24 @@ body {
   overflow-x: hidden;
 }
 
+#list-workspace-list {
+  position: absolute;
+  left: 5%;
+  top: 10%;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#item-workspace {
+  position: absolute;
+  left: 1%;
+  top: 10%;
+  width: 98%;
+  height: 18%;
+  display: block;
+}
+
 .list-card,
 .selected-list-card,
 .unselected-list-card {
@@ -219,7 +237,7 @@ body {
 
 #edit-numbering {
   position: absolute;
-  left: 0%;
+  left: 5%;
   top: 0%;
   width: 20%;
   height: 100%;
