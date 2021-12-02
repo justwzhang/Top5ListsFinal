@@ -55,7 +55,8 @@ updateTop5List = async (req, res) => {
         top5List.items = body.items
         top5List.peopleLiked = body.peopleLiked
         top5List.peopleDisliked = body.peopleDisliked
-        top5List.comments = body.comments
+        top5List.commentsUser = body.commentsUser
+        top5List.commentsString = body.commentsString
         top5List.views = body.views
         top5List.likes = body.likes
         top5List.dislikes = body.dislikes

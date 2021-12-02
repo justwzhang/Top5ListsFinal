@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import jsTPS from '../common/jsTPS'
-import api from '../api'
+import api, { createCommunityList } from '../api'
 import MoveItem_Transaction from '../transactions/MoveItem_Transaction'
 import UpdateItem_Transaction from '../transactions/UpdateItem_Transaction'
 import AuthContext from '../auth'
@@ -47,6 +47,7 @@ function GlobalStoreContextProvider(props) {
     const [store, setStore] = useState({
         allLists: [],
         viewedLists: [],
+        communityListKeyNamePairs:[],
         currentList: null,
         newListCounter: 0,
         listNameActive: false,
@@ -70,6 +71,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: payload.allLists,
                     viewedLists: payload.viewedLists,
+                    communityListKeyNamePairs:store.communityListKeyNamePairs,
                     currentList: payload.top5List,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
@@ -84,6 +86,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: store.allLists,
                     viewedLists: store.viewedLists,
+                    communityListKeyNamePairs:store.communityListKeyNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
@@ -98,6 +101,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: store.allLists,
                     viewedLists: store.viewedLists,
+                    communityListKeyNamePairs:store.communityListKeyNamePairs,
                     currentList: payload,
                     newListCounter: store.newListCounter + 1,
                     isListNameEditActive: false,
@@ -112,6 +116,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: payload.allLists,
                     viewedLists: payload.owned,
+                    communityListKeyNamePairs:payload.pairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
@@ -126,6 +131,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: store.allLists,
                     viewedLists: store.viewedLists,
+                    communityListKeyNamePairs:store.communityListKeyNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
@@ -140,6 +146,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: store.allLists,
                     viewedLists: store.viewedLists,
+                    communityListKeyNamePairs:store.communityListKeyNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
@@ -154,6 +161,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: store.allLists,
                     viewedLists: store.viewedLists,
+                    communityListKeyNamePairs:store.communityListKeyNamePairs,
                     currentList: payload.currentList,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
@@ -168,6 +176,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: payload.allLists,
                     viewedLists: payload.owned,
+                    communityListKeyNamePairs:store.communityListKeyNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
@@ -182,6 +191,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     allLists: store.allLists,
                     viewedLists: store.viewedLists,
+                    communityListKeyNamePairs:store.communityListKeyNamePairs,
                     currentList: store.currentList,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: true,
@@ -222,13 +232,6 @@ function GlobalStoreContextProvider(props) {
                             owned:ownedLists
                         }
                     });
-                    // storeReducer({
-                    //     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                    //     payload: {
-                    //         allLists:listOfLists,
-                    //         owned:ownedLists
-                    //     }
-                    // });
                 }
             }catch(err){
 
@@ -242,11 +245,112 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.publishCurrentList = function(){
-        store.currentList.published = true
+        store.currentList.published = true;
+        let tempList = store.currentList;
         store.saveCurrentList();
+        let thePair = 1
+        if(store.communityListKeyNamePairs.length > 0 ){
+            store.communityListKeyNamePairs.map((pair) => {
+                if(pair.name === tempList.name){
+                    thePair = pair
+                }
+            })  
+        }
+        if(thePair === 1){
+            let string0 = tempList.items[0];
+            let string1 = tempList.items[1];
+            let string2 = tempList.items[2];
+            let string3 = tempList.items[3];
+            let string4 = tempList.items[4];
+            const date = new Date()
+            const now = [date.getMonth(), date.getDate(), date.getFullYear()]
+            let newItems = [{item: string0, votes:5},
+                {item: string1, votes:4},
+                {item: string2, votes:3},
+                {item: string3, votes:2},
+                {item: string4, votes: 1}]
+            let tempVotes = [5, 4, 3, 2, 1]
+            let payload = {
+                name: tempList.name,
+                items: tempList.items,
+                votes: tempVotes,
+                date: now,
+                views: 0,
+                likes: 0,
+                dislikes: 0,
+                peopleLiked: [],
+                peopleDisliked: [],
+                commentsUser: [],
+                commentsString: []
+            };
+            createCommunityList(payload)
+        }else{
+            updateCommunityListWithNew(tempList, thePair._id)
+        }
+        async function updateCommunityListWithNew(list, comListId){
+            let response = await api.getCommunityListById(comListId)
+                if(response.data.success){
+                    let comList = response.data.communityList
+                    let comListItems = comList.items
+                    let comVotes = comList.votes
+                    let newItems = list.items
+                    for(let i=0; i<newItems.length; i++){
+                        let tempItem = newItems[i];
+                        let test = false
+                        for(let j=0; j<comListItems.length; j++){
+                            let comItem = comListItems[j];
+                            if(comItem=== tempItem){
+                                let newVotes = comVotes[j] + (5-i)
+                                comList.votes[j] = newVotes
+                                test = true
+                            }
+                        }
+                        if(!test){
+                            let tempItems = comList.items
+                            let tempVotes = comList.votes
+                            comList.items = [...tempItems, tempItem]
+                            comList.votes = [...tempVotes, 5-i]
+                        }
+                    }
+                    store.sortCommunityList(comList)
+                }
+            
+        }
+        async function createCommunityList(list){
+            let response = await api.createCommunityList(list)
+            if(response.data.success){
+                store.loadIdNamePairs()
+            }
+        }
     }
+
+    store.sortCommunityList = function(list){
+        let items = list.items
+        let votes = list.votes
+        for(let i=0; i<list.items.length; i++){
+            for(let j=0; j<list.items.length-i-1; j++){
+                if(list.votes[j] < list.votes[j+1]){
+                    let tempItem = list.items[j]
+                    let tempVote = list.votes[j]
+                    list.items[j] = list.items[j+1]
+                    list.items[j+1] = tempItem
+                    list.votes[j] = list.votes[j+1]
+                    list.votes[j+1] = tempVote
+                }
+            }
+        }
+        store.saveCommunityList(list)
+    }
+
+    store.saveCommunityList= async function(list) {
+        const response = await api.updateCommunityListById(list._id, list);
+        if (response.data.success) {
+
+        }
+    }
+
     store.updateCurrentListName = function(text){
-        this.currentList.name = text
+        this.currentList.name = text;
         if(store.validateList(store.currentList)){
             storeReducer({
                 type:GlobalStoreActionType.PUBLISHABLE,
@@ -260,7 +364,7 @@ function GlobalStoreContextProvider(props) {
         }
     }
     store.updateCurrentListItem = function(index, text){
-        this.currentList.items[index] = text
+        this.currentList.items[index] = text;
         if(store.validateList(store.currentList)){
             storeReducer({
                 type:GlobalStoreActionType.PUBLISHABLE,
@@ -336,7 +440,6 @@ function GlobalStoreContextProvider(props) {
         let newListName = "Untitled" + store.newListCounter;
         const date = new Date()
         const now = [date.getMonth(), date.getDate(), date.getFullYear()]
-        console.log(auth)
         let payload = {
             name: newListName,
             items: ["", "", "", "", ""],
@@ -380,13 +483,30 @@ function GlobalStoreContextProvider(props) {
                     ownedLists = [...ownedLists, list];
                 } 
             });
-            storeReducer({
-                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                payload: {
-                    allLists:listOfLists,
-                    owned:ownedLists
+            try{
+                const response2 = await api.getCommunityListPairs();
+                if(response2.data.success){
+                    let communityPairs = response2.data.idNamePairs;
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                        payload: {
+                            allLists:listOfLists,
+                            owned:ownedLists,
+                            pairs:communityPairs
+                        }
+                    });
                 }
-            });
+            }catch(err2){
+                console.log("error")
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: {
+                        allLists:listOfLists,
+                        owned:ownedLists,
+                        pairs:[]
+                    }
+                });
+            }
         }
         else {
             console.log("API FAILED TO GET THE LIST PAIRS");

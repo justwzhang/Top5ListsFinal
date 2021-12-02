@@ -1,6 +1,7 @@
 const auth = require('../auth')
 const express = require('express')
 const Top5ListController = require('../controllers/top5list-controller')
+const CommunityListController = require('../controllers/communityList-controller')
 const UserController = require('../controllers/user-controller')
 const router = express.Router()
 
@@ -15,4 +16,12 @@ router.post('/register', UserController.registerUser)
 router.get('/loggedIn', UserController.getLoggedIn)
 router.get('/logout', UserController.logoutUser)
 router.post('/login', UserController.logInUser)
+
+router.post('/communitylist', auth.verify, CommunityListController.createCommunityList)
+router.put('/communitylist/:id', auth.verify, CommunityListController.updateCommunityList)
+router.delete('/communitylist/:id', auth.verify, CommunityListController.deleteCommunityList)
+router.get('/communitylist/:id', auth.verify, CommunityListController.getCommunityListById)
+router.get('/communitylists', auth.verify, CommunityListController.getCommunityLists)
+router.get('/communitylistpairs', auth.verify, CommunityListController.getCommunityListPairs)
+
 module.exports = router
