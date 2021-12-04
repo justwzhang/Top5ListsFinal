@@ -36,6 +36,19 @@ const HomeScreen = () => {
     function handleUpdateText(event){
         store.updateCurrentListName(event.target.value)
     }
+
+    function handleHome(){
+        store.changeToHome()
+    }
+    function handleAllList(){
+        store.changeToAllLists()
+    }
+    function handleUserList(){
+        store.changeToUsers()
+    }
+    function handleCommunity(){
+        store.changeToCommunity()
+    }
     let workspace = "";
     //For listing all lists
     if (store) {
@@ -132,22 +145,22 @@ const HomeScreen = () => {
         <div id="top5-list-selector">
            <div id="list-selector-heading-left">
                <DeleteModal/>
-               <IconButton disabled = {store.currentList}>
+               <IconButton disabled = {store.currentList} onClick = {handleHome}>
                     <HomeIcon style ={{
                     fontSize: "35pt"
                 }}/>
                </IconButton>
-               <IconButton disabled = {store.currentList}>
+               <IconButton disabled = {store.currentList} onClick = {handleAllList}>
                    <PeopleIcon style ={{
                     fontSize: "35pt"
                 }}/>
                </IconButton>
-               <IconButton disabled = {store.currentList}>
+               <IconButton disabled = {store.currentList} onClick = {handleUserList}>
                    <PersonIcon style ={{
                     fontSize: "35pt"
                 }}/>
                </IconButton>
-               <IconButton disabled = {store.currentList}>
+               <IconButton disabled = {store.currentList} onClick = {handleCommunity}>
                    <FunctionsIcon style ={{
                     fontSize: "35pt"
                 }}/>

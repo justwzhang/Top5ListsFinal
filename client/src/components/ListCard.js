@@ -26,6 +26,7 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
+    const [ isOpen, setIsOpen] = useState(false)
     const { list } = props;
     // const [list, setList] = useState(store.getListById(idNamePair._id))
 
@@ -41,8 +42,12 @@ function ListCard(props) {
     //     event.stopPropagation();
     //     toggleEdit();
     // }
-    function handleOpenList(){
+    function handleCloseList(){
+        setIsOpen(false)
+    }
 
+    function handleOpenList(){
+        setIsOpen(true)
     }
     function handleToggleLike(){
 
@@ -155,6 +160,84 @@ function ListCard(props) {
                             <DeleteIcon style={{fontSize:'30pt'}} />
                         </IconButton>
 
+                        <br/><div> Views:{list.views} 
+                            <IconButton onClick={handleOpenList} aria-label='edit'>
+                                <KeyboardArrowDownIcon style={{fontSize:'30pt', alignItems: "left"}} />
+                            </IconButton>
+                        </div>
+                    </Box>
+            </ListItem>
+    }
+    if(store.loadedPage === "COMMUNITY_LISTS"){
+        cardElement =
+            <ListItem
+                id={list._id}
+                key={list._id}
+                sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+                button
+                onClick={(event) => {
+                    handleLoadList(event, list._id)
+                }
+                }
+                style={{
+                    fontSize: '20pt',
+                    width: '100%',
+                    borderRadius: "20px",
+                    backgroundColor: "#d4d4f5"
+                }}
+            >
+                    <Box sx={{ p: 1, flexGrow: 1 }}>{list.name} <br/> 
+                        {/* <div style={{fontSize: '10pt'}}>By: {list.ownerUser}</div><br/> */}
+                    </Box>
+                    <Box sx={{ p: 1 }}>
+                        <IconButton onClick={handleToggleLike} aria-label='edit'>
+                            <ThumbUpOffAltIcon style={{fontSize:'30pt'}} />
+                            <div style={{fontSize: '10pt'}}>{list.likes}</div>
+                        </IconButton>
+
+                        <IconButton onClick={handleToggleDislike} aria-label='edit'>
+                            <ThumbDownOffAltIcon style={{fontSize:'30pt'}} />
+                            <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
+                        </IconButton>
+                        <br/><div> Views:{list.views} 
+                            <IconButton onClick={handleOpenList} aria-label='edit'>
+                                <KeyboardArrowDownIcon style={{fontSize:'30pt', alignItems: "left"}} />
+                            </IconButton>
+                        </div>
+                    </Box>
+            </ListItem>
+    }
+    if(store.loadedPage === "USERS_LISTS"||store.loadedPage === "ALL_LISTS"){
+        cardElement =
+            <ListItem
+                id={list._id}
+                key={list._id}
+                sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+                button
+                onClick={(event) => {
+                    handleLoadList(event, list._id)
+                }
+                }
+                style={{
+                    fontSize: '20pt',
+                    width: '100%',
+                    borderRadius: "20px",
+                    backgroundColor: "#d4d4f5"
+                }}
+            >
+                    <Box sx={{ p: 1, flexGrow: 1 }}>{list.name} <br/> 
+                        <div style={{fontSize: '10pt'}}>By: {list.ownerUser}</div><br/>
+                    </Box>
+                    <Box sx={{ p: 1 }}>
+                        <IconButton onClick={handleToggleLike} aria-label='edit'>
+                            <ThumbUpOffAltIcon style={{fontSize:'30pt'}} />
+                            <div style={{fontSize: '10pt'}}>{list.likes}</div>
+                        </IconButton>
+
+                        <IconButton onClick={handleToggleDislike} aria-label='edit'>
+                            <ThumbDownOffAltIcon style={{fontSize:'30pt'}} />
+                            <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
+                        </IconButton>
                         <br/><div> Views:{list.views} 
                             <IconButton onClick={handleOpenList} aria-label='edit'>
                                 <KeyboardArrowDownIcon style={{fontSize:'30pt', alignItems: "left"}} />
