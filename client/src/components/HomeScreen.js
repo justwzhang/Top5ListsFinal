@@ -16,6 +16,9 @@ import {DeleteModal} from '.';
 import {Statusbar} from '.';
 import Top5Item from './Top5Item.js'
 import Button from '@mui/material/Button';
+import AuthContext from '../auth'
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -23,7 +26,9 @@ import Button from '@mui/material/Button';
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
-
+    const { auth } = useContext(AuthContext);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
     useEffect(() => {
         store.loadIdNamePairs();
     }, []);
@@ -49,6 +54,59 @@ const HomeScreen = () => {
     function handleCommunity(){
         store.changeToCommunity()
     }
+
+    const handleProfileMenuOpen = (event) =>{
+        setAnchorEl(event.currentTarget);
+        // console.log("ssssssssss")
+    };
+
+    function handleMenuClose() {
+        setAnchorEl(null);
+    };
+    function sortPublishNew(){
+        setAnchorEl(null);
+        store.sortPublishNew();
+    }
+    function sortPublishOld(){
+        setAnchorEl(null);
+        store.sortPublishOld();
+    }
+    function sortViews(){
+        setAnchorEl(null);
+        store.sortViews();
+    }
+    function sortLikes(){
+        setAnchorEl(null);
+        store.sortLikes();
+    }
+    function sortDislikes(){
+        setAnchorEl(null);
+        store.sortDislikes();
+    }
+    const menu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id="sort-by"
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={sortPublishNew}>Publish Date (Newist)</MenuItem>
+            <MenuItem onClick={sortPublishOld}>Publish Date (oldest)</MenuItem>
+            <MenuItem onClick={sortViews}>Views</MenuItem>
+            <MenuItem onClick={sortLikes}>Likes</MenuItem>
+            <MenuItem onClick={sortDislikes}>Dislikes</MenuItem>
+        </Menu>
+    );
+
     let workspace = "";
     //For listing all lists
     if (store) {
@@ -170,10 +228,12 @@ const HomeScreen = () => {
             </div>
             <div id="list-selector-heading-right">
                 Sort By
-                <IconButton disabled = {store.currentList}>
+                <IconButton disabled = {store.currentList} onClick = {handleProfileMenuOpen}>
                    <MenuIcon style ={{fontSize: "35pt"}}/>
                </IconButton>
+               
             </div>
+            {menu}
                 {workspace}
         </div>)
 }

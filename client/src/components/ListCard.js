@@ -261,14 +261,10 @@ function ListCard(props) {
                     {createdBy}
                 </div>
                 <div id="open-list-right" style={{}}>
-                <IconButton onClick={handleToggleLike} aria-label='edit'>
-                    <ThumbUpOffAltIcon style={{fontSize:'30pt'}} />
-                    <div style={{fontSize: '10pt'}}>{list.likes}</div>
-                </IconButton>
-                <IconButton onClick={handleToggleDislike} aria-label='edit'>
-                    <ThumbDownOffAltIcon style={{fontSize:'30pt'}} />
-                    <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
-                </IconButton>
+                    {likeButton}
+
+                    {dislikeButton}
+                    
                     {deleteButton}
                 </div>
                 <Box display="flex" justifyContent="space-between" style={{top:"20%", height:"60%", position:"absolute", width:"95%", maxWidth:"100%"}}>
