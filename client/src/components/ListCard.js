@@ -33,15 +33,26 @@ function ListCard(props) {
     const dateString = getString()
     let color = "beige"
     // const [list, setList] = useState(store.getListById(idNamePair._id))
-
-    useEffect(()=>{
-        loadCommentPairs()
-    }, [])
+    let comments = ""
     let pairs = []
+    if(list.commentsUser.length>0)
+        loadCommentPairs()
+    
     function loadCommentPairs(){
         for(let i=0; i<list.commentsUser.length; i++){
             pairs = [...pairs, {user: list.commentsUser[i], comment: list.commentsString[i]}];
         }
+        
+        comments = 
+        
+            pairs.map((pair)=>(
+                
+                <Box style={{fontSize:"20pt",backgroundColor:"#e0e0e0", marginTop:"1rem", borderRadius: "20px", overflowWrap:"break-word"}}>
+                    <div style={{fontSize:"12pt", left:"2%"}}>{pair.user}</div>
+                    <div style ={{left:"2%", top:"3%"}}>{pair.comment}</div>
+                </Box>
+            ))
+        
     }
 
     function getString(){
@@ -120,7 +131,7 @@ function ListCard(props) {
         decider = <div style={{fontSize: '10pt'}}>Date: {dateString}</div>
     }
     let card = 
-    <List style={{fontSize:"30px"}}>
+    <List style={{fontSize:"30px", left:"2%"}}>
         <Box style={{ marginBottom: "1rem"}}>
             1. {list.items[0]}
         </Box>
@@ -139,26 +150,26 @@ function ListCard(props) {
     </List>
     if(store.loadedPage === "COMMUNITY_LISTS"){
         card = 
-            <List style={{fontSize:"30px"}}>
-                <Box style={{marginBottom: "0.2rem"}}>
+            <List style={{fontSize:"24px", left:"2%"}}>
+                <Box style={{marginBottom: "0.4rem"}}>
                     1. {list.items[0]}<br/>
-                    <div style={{fontSize:"20px"}}>{list.votes[0]} votes</div>
+                    <div style={{fontSize:"16px"}}>{list.votes[0]} votes</div>
                 </Box>
-                <Box style={{ marginBottom: "0.2rem"}}>
+                <Box style={{ marginBottom: "0.4rem"}}>
                     2. {list.items[1]}<br/>
-                    <div style={{fontSize:"20px"}}>{list.votes[1]} votes</div>
+                    <div style={{fontSize:"16px"}}>{list.votes[1]} votes</div>
                 </Box>
-                <Box style={{ marginBottom: "0.2rem"}}>
+                <Box style={{ marginBottom: "0.4rem"}}>
                     3. {list.items[2]}<br/>
-                    <div style={{fontSize:"20px"}}>{list.votes[2]} votes</div>
+                    <div style={{fontSize:"16px"}}>{list.votes[2]} votes</div>
                 </Box>
-                <Box style={{ marginBottom: "0.2rem"}}>
+                <Box style={{ marginBottom: "0.4rem"}}>
                     4. {list.items[3]}<br/>
-                    <div style={{fontSize:"20px"}}>{list.votes[3]} votes</div>
+                    <div style={{fontSize:"16px"}}>{list.votes[3]} votes</div>
                 </Box>
-                <Box style={{ marginBottom: "0.2rem"}}>
+                <Box style={{ marginBottom: "0.4rem"}}>
                     5. {list.items[4]}<br/>
-                    <div style={{fontSize:"20px"}}>{list.votes[4]} votes</div>
+                    <div style={{fontSize:"16px"}}>{list.votes[4]} votes</div>
                 </Box>
             </List>
     }
@@ -233,24 +244,28 @@ function ListCard(props) {
                 </IconButton>
                     {deleteButton}
                 </div>
-                <Box display="flex" justifyContent="space-between" style={{top:"5%"}}>
+                <Box display="flex" justifyContent="space-between" style={{top:"20%", height:"60%", position:"absolute", width:"95%", maxWidth:"100%"}}>
                     <Box style={{backgroundColor:"#e0e0e0", width:"50%", borderRadius: "20px"}}>
-                    {card}
+                        {card}
                     </Box>
                     <Box style={{ width:"45%", display:"inline-block", left:"50%", overflowY: "scroll"}}>
-                    <TextField 
-                        label="Comment" 
-                        size="small" 
-                        value={text}
-                        style ={{width: "90%", backgroundColor:"white", left:"5%"}}
-                        onChange={handleUpdateText}
-                        onKeyPress={handleKeyPress}>
-                    </TextField>
-
+                        <TextField 
+                            label="Comment" 
+                            size="small" 
+                            value={text}
+                            style ={{width: "90%", backgroundColor:"white"}}
+                            onChange={handleUpdateText}
+                            onKeyPress={handleKeyPress}>
+                        </TextField>
+                        <List>
+                            {comments}
+                        </List>
                     </Box>
                 </Box>
-                {decider}
-                <Box style={{position:"absolute", left:"85%", marginRight:"auto"}}>
+                <Box style={{position:"absolute", left:"5%", marginRight:"auto", top:"90%"}}>
+                    {decider}
+                </Box>
+                <Box style={{position:"absolute", left:"85%", marginRight:"auto", top:"90%"}}>
                     Views : {list.views}
                     <IconButton onClick={handleCloseList} aria-label='edit'>
                         <KeyboardArrowUpIcon  style={{fontSize:'20pt'}} />
