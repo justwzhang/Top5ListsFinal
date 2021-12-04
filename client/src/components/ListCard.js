@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
@@ -25,11 +26,14 @@ import List from '@mui/material/List';
 */
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const [isOpen, setIsOpen] = useState(false)
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const { list } = props;
+    const [liked, setLiked] = useState(list.peopleLiked.includes(auth.user.userName))
+    const [disliked, setDisliked] = useState(list.peopleDisliked.includes(auth.user.userName))
     const dateString = getString()
     let color = "beige"
     // const [list, setList] = useState(store.getListById(idNamePair._id))
@@ -84,10 +88,12 @@ function ListCard(props) {
         setIsOpen(true)
     }
     function handleToggleLike(){
-
+        store.likeList(list);
+        setLiked(!liked);
     }
     function handleToggleDislike(){
-
+        store.dislikeList(list);
+        setDisliked(!disliked);
     }
     function toggleEdit() {
         let newActive = !editActive;
@@ -113,6 +119,33 @@ function ListCard(props) {
     }
     function handleUpdateText(event) {
         setText(event.target.value);
+    }
+
+    let likeButton =
+    <IconButton onClick={handleToggleLike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || disliked}>
+        <ThumbUpOffAltIcon style={{fontSize:'30pt'}} />
+        <div style={{fontSize: '10pt'}}>{list.likes}</div>
+    </IconButton>
+
+    let dislikeButton = 
+    <IconButton onClick={handleToggleDislike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || liked}>
+        <ThumbDownOffAltIcon style={{fontSize:'30pt'}} />
+        <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
+    </IconButton>
+    if(liked){
+        likeButton =
+    <IconButton onClick={handleToggleLike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || disliked}>
+        <ThumbUpAltIcon style={{fontSize:'30pt'}} />
+        <div style={{fontSize: '10pt'}}>{list.likes}</div>
+    </IconButton>
+    }
+
+    if(disliked){
+        dislikeButton = 
+        <IconButton onClick={handleToggleDislike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || liked}>
+            <ThumbDownAltIcon style={{fontSize:'30pt'}} />
+            <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
+        </IconButton>
     }
     let createdBy = <div style={{fontSize: '10pt'}}>By: {list.ownerUser}</div>
     let deleteButton = 
@@ -195,20 +228,14 @@ function ListCard(props) {
                     {decider}
                 </Box>
                 <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleLike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS"}>
-                        <ThumbUpOffAltIcon style={{fontSize:'30pt'}} />
-                        <div style={{fontSize: '10pt'}}>{list.likes}</div>
-                    </IconButton>
+                    {likeButton}
 
-                    <IconButton onClick={handleToggleDislike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS"}>
-                        <ThumbDownOffAltIcon style={{fontSize:'30pt'}} />
-                        <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
-                    </IconButton>
+                    {dislikeButton}
 
                     {deleteButton}
 
                     <br/><div> Views:{list.views} 
-                        <IconButton onClick={handleOpenList} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS"}>
+                        <IconButton onClick={handleOpenList} aria-label='edit'>
                             <KeyboardArrowDownIcon style={{fontSize:'30pt', alignItems: "left"}} />
                         </IconButton>
                     </div>
@@ -226,7 +253,7 @@ function ListCard(props) {
             width: '100%',
             height: "325pt",
             borderRadius: "20px",
-            backgroundColor: "#d4d4f5"
+            backgroundColor: color
         }}
     >
         <Box sx={{ p: 1, flexGrow: 1 }}>
@@ -253,6 +280,7 @@ function ListCard(props) {
                             label="Comment" 
                             size="small" 
                             value={text}
+                            disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS"}
                             style ={{width: "90%", backgroundColor:"white"}}
                             onChange={handleUpdateText}
                             onKeyPress={handleKeyPress}>

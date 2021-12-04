@@ -28,7 +28,8 @@ export const GlobalStoreActionType = {
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     PUBLISHABLE: "PUBLISHABLE",
     SAVE_LIST: "SAVE_LIST",
-    CHANGE_PAGE: "CHANGE_PAGE"
+    CHANGE_PAGE: "CHANGE_PAGE",
+    UPDATE_COMMUNITY_LIST: "UPDATE_COMMUNITY_LIST"
 }
 
 export const LoadedPageType = {
@@ -227,6 +228,21 @@ function GlobalStoreContextProvider(props) {
                     loadedPage: payload.page
                 });
             }
+            case GlobalStoreActionType.UPDATE_COMMUNITY_LIST: {
+                return setStore({
+                    allLists: store.allLists,
+                    viewedLists: payload,
+                    communityLists:payload,
+                    currentList: store.currentList,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: store.isListNameEditActive,
+                    isItemEditActive: store.isItemEditActive,
+                    listMarkedForDeletion: store.listMarkedForDeletion,
+                    isDeleteModalOpen: store.isDeleteModalOpen,
+                    publishable: false,
+                    loadedPage: store.page
+                });
+            }
             default:
                 return store;
         }
@@ -236,6 +252,88 @@ function GlobalStoreContextProvider(props) {
     store.updateItem = function (index, newItem) {
         store.currentList.items[index] = newItem;
         store.updateCurrentList();
+    }
+
+    store.updateCommunityList = async function(list){
+        let response = await api.updateCommunityListById(list._id, list);
+        if(response.data.success){
+            store.changeToCommunity()
+        }
+    }
+
+    store.likeList = function(list){
+        if(store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+            if(list.peopleLiked.includes(auth.user.userName)){
+                for(let i=0; i<list.peopleLiked.length; i++){
+                    if(list.peopleLiked[i] === auth.user.userName){
+                        list.peopleLiked.splice(i,1);
+                        list.likes--;
+                        break;
+                    }
+                }
+            }else{
+                list.peopleLiked = [...list.peopleLiked, auth.user.userName];
+                list.likes++;
+            }
+            store.updateCommunityList(list);
+        }else{
+            if(list.peopleLiked.includes(auth.user.userName)){
+                for(let i=0; i<list.peopleLiked.length; i++){
+                    if(list.peopleLiked[i] === auth.user.userName){
+                        list.peopleLiked.splice(i,1);
+                        list.likes--;
+                        break;
+                    }
+                }
+            }else{
+                list.peopleLiked = [...list.peopleLiked, auth.user.userName];
+                list.likes++;
+            }
+            store.updateList(list);
+        }
+    }
+
+    store.dislikeList = function(list){
+        if(store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+            if(list.peopleDisliked.includes(auth.user.userName)){
+                for(let i=0; i<list.peopleDisliked.length; i++){
+                    if(list.peopleDisliked[i] === auth.user.userName){
+                        list.peopleDisliked.splice(i,1);
+                        list.dislikes--;
+                        break;
+                    }
+                }
+            }else{
+                list.peopleDisliked = [...list.peopleDisliked, auth.user.userName];
+                list.dislikes++;
+            }
+            store.updateCommunityList(list);
+        }else{
+            if(list.peopleDisliked.includes(auth.user.userName)){
+                for(let i=0; i<list.peopleDisliked.length; i++){
+                    if(list.peopleDisliked[i] === auth.user.userName){
+                        list.peopleDisliked.splice(i,1);
+                        list.dislikes--;
+                        break;
+                    }
+                }
+            }else{
+                list.peopleDisliked = [...list.peopleDisliked, auth.user.userName];
+                list.dislikes++;
+            }
+            store.updateList(list);
+        }
+    }
+
+    store.updateList = async function (top5List) {
+        let response = await api.updateTop5ListById(top5List._id, top5List);
+        if (response.data.success) {
+            //store.loadIdNamePairs()
+            if(store.loadedPage===LoadedPageType.ALL_LISTS)
+                store.changeToAllLists()
+            else if(store.loadedPage===LoadedPageType.USERS_LISTS)
+                store.changeToUsers()
+        }   
     }
 
     store.comment = function(list, text){
@@ -261,8 +359,10 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.increaseView = function (list){
-        list.views = list.views+1
+        
+        
         if(store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+            list.views = list.views+1
             async function viewIncrease(list){
                 const response = await api.updateCommunityListById(list._id, list);
                 if(response.data.success){
@@ -272,10 +372,13 @@ function GlobalStoreContextProvider(props) {
             viewIncrease(list);
         }else{
             async function viewIncrease(list){
-                const response = await api.updateTop5ListById(list._id, list);
-                if(response.data.success){
-                    store.loadIdNamePairs();
-                }
+                if(list.published){
+                    list.views = list.views+1
+                    const response = await api.updateTop5ListById(list._id, list);
+                    if(response.data.success){
+                        store.loadIdNamePairs();
+                    }
+                }   
             }
             viewIncrease(list);
         }
@@ -318,13 +421,23 @@ function GlobalStoreContextProvider(props) {
         });
     }
     store.changeToCommunity = async function (){
-        const response = await api.getAllCommunityLists();
-        if(response.data.success){
-            let listOfLists = response.data.data;
+        try{
+            const response = await api.getAllCommunityLists();
+            if(response.data.success){
+                let listOfLists = response.data.data;
+                storeReducer({
+                    type: GlobalStoreActionType.CHANGE_PAGE,
+                    payload: {
+                        viewedLists:listOfLists,
+                        page: LoadedPageType.COMMUNITY_LISTS
+                    }
+                });
+            }
+        }catch(err){
             storeReducer({
                 type: GlobalStoreActionType.CHANGE_PAGE,
                 payload: {
-                    viewedLists:listOfLists,
+                    viewedLists:[],
                     page: LoadedPageType.COMMUNITY_LISTS
                 }
             });
@@ -374,18 +487,8 @@ function GlobalStoreContextProvider(props) {
                     theList = store.communityLists[i]
                 }
             }
-            // store.communityListKeyNamePairs.map((pair) => {
-            //     if(pair.name === tempList.name){
-            //         thePair = pair
-            //     }
-            // })  
         }
         if(theList === 1){
-            let string0 = tempList.items[0];
-            let string1 = tempList.items[1];
-            let string2 = tempList.items[2];
-            let string3 = tempList.items[3];
-            let string4 = tempList.items[4];
             const date = new Date()
             const now = [date.getMonth(), date.getDate(), date.getFullYear()]
             let tempVotes = [5, 4, 3, 2, 1]
@@ -662,17 +765,55 @@ function GlobalStoreContextProvider(props) {
 
     store.deleteList = async function (listToDelete) {
         if(listToDelete.ownerUser === auth.user.userName){
-            let response = await api.deleteTop5ListById(listToDelete._id);
-            if (response.data.success) {
-                store.loadIdNamePairs();
-                history.push("/");
+            try{
+                let response = await api.deleteTop5ListById(listToDelete._id);
+                if (response.data.success) {
+                    store.unmarkListForDeletion();
+                    store.removeFromCommunityList(listToDelete);
+                    store.loadIdNamePairs();
+                }
+            }catch(err){
                 store.unmarkListForDeletion();
+                    store.removeFromCommunityList(listToDelete);
+                    store.loadIdNamePairs();
             }
         }else{
             store.unmarkListForDeletion();
         }
     }
 
+    store.removeFromCommunityList = function(list){
+        let communityList = 1
+        for(let i=0; i<store.communityLists.length; i++){
+            if(store.communityLists[i].name === list.name){
+                communityList = store.communityLists[i]
+                break;
+            }
+        }
+        if(communityList === 1){
+            return;
+        }
+        for(let i=0; i<list.items.length;i++){
+            for(let j=0; j<communityList.items.length; j++){
+                if(communityList.items[j] === list.items[i]){
+                    communityList.votes[j] -= (5-i);
+                }
+                if(communityList.votes[j]<=0){
+                    communityList.votes.splice(j,1);
+                    communityList.items.splice(j,1);
+                }
+            }
+        }
+        if(communityList.items.length<5){
+            store.deleteCommunityList(communityList)
+        }else{
+            store.sortCommunityList(communityList)
+        }
+        
+    }
+    store.deleteCommunityList = async function(list){
+        const response = await api.deleteCommunityListById(list._id);
+    }
     store.deleteMarkedList = function () {
         store.deleteList(store.listMarkedForDeletion);
     }
@@ -704,12 +845,13 @@ function GlobalStoreContextProvider(props) {
                         }
                     });
                     //history.push("/top5list/" + top5List._id);
-                    console.log("test")
+                    //console.log("test")
                 }
             }
         }
     }
 
+    //Dont need anything else under this
     store.addMoveItemTransaction = function (start, end) {
         let transaction = new MoveItem_Transaction(store, start, end);
         tps.addTransaction(transaction);
