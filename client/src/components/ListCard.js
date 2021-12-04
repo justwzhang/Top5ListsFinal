@@ -40,7 +40,7 @@ function ListCard(props) {
     let pairs = []
     function loadCommentPairs(){
         for(let i=0; i<list.commentsUser.length; i++){
-            pairs = [...pairs, {user: list.commentsUser[i], comment: list.commentString[i]}];
+            pairs = [...pairs, {user: list.commentsUser[i], comment: list.commentsString[i]}];
         }
     }
 
@@ -93,9 +93,11 @@ function ListCard(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            let id = event.target.id.substring("list-".length);
-            //store.changeListName(id, text);
-            toggleEdit();
+            if(text !== ""){
+                store.comment(list, text);
+                setText("")
+            }
+            
         }
     }
     function handleUpdateText(event) {
@@ -239,8 +241,10 @@ function ListCard(props) {
                     <TextField 
                         label="Comment" 
                         size="small" 
+                        value={text}
                         style ={{width: "90%", backgroundColor:"white", left:"5%"}}
-                        onChange={handleUpdateText}>
+                        onChange={handleUpdateText}
+                        onKeyPress={handleKeyPress}>
                     </TextField>
 
                     </Box>

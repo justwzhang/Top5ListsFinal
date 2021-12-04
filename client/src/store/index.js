@@ -238,6 +238,28 @@ function GlobalStoreContextProvider(props) {
         store.updateCurrentList();
     }
 
+    store.comment = function(list, text){
+        list.commentsUser= [auth.user.userName, ...list.commentsUser]
+        list.commentsString = [text, ...list.commentsString]
+        if(store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+            async function comment(list, text){
+                const response = await api.updateCommunityListById(list._id, list);
+                if(response.data.success){
+                    store.changeToCommunity();
+                }
+            }
+            comment(list, text);
+        }else{
+            async function comment(list, text){
+                const response = await api.updateTop5ListById(list._id, list);
+                if(response.data.success){
+                    store.loadIdNamePairs();
+                }
+            }
+            comment(list, text);
+        }
+    }
+
     store.increaseView = function (list){
         list.views = list.views+1
         if(store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
