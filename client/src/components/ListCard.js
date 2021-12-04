@@ -69,6 +69,7 @@ function ListCard(props) {
     }
 
     function handleOpenList(){
+        store.increaseView(list);
         setIsOpen(true)
     }
     function handleToggleLike(){
@@ -116,7 +117,50 @@ function ListCard(props) {
         color = "#d4d4f5"
         decider = <div style={{fontSize: '10pt'}}>Date: {dateString}</div>
     }
-    //base List for home lists unpublished
+    let card = 
+    <List style={{fontSize:"30px"}}>
+        <Box style={{ marginBottom: "1rem"}}>
+            1. {list.items[0]}
+        </Box>
+        <Box style={{ marginBottom: "1rem"}}>
+            2. {list.items[1]}
+        </Box>
+        <Box style={{ marginBottom: "1rem"}}>
+            3. {list.items[2]}
+        </Box>
+        <Box style={{ marginBottom: "1rem"}}>
+            4. {list.items[3]}
+        </Box>
+        <Box style={{ marginBottom: "1rem"}}>
+            5. {list.items[4]}
+        </Box>
+    </List>
+    if(store.loadedPage === "COMMUNITY_LISTS"){
+        card = 
+            <List style={{fontSize:"30px"}}>
+                <Box style={{marginBottom: "0.2rem"}}>
+                    1. {list.items[0]}<br/>
+                    <div style={{fontSize:"20px"}}>{list.votes[0]} votes</div>
+                </Box>
+                <Box style={{ marginBottom: "0.2rem"}}>
+                    2. {list.items[1]}<br/>
+                    <div style={{fontSize:"20px"}}>{list.votes[1]} votes</div>
+                </Box>
+                <Box style={{ marginBottom: "0.2rem"}}>
+                    3. {list.items[2]}<br/>
+                    <div style={{fontSize:"20px"}}>{list.votes[2]} votes</div>
+                </Box>
+                <Box style={{ marginBottom: "0.2rem"}}>
+                    4. {list.items[3]}<br/>
+                    <div style={{fontSize:"20px"}}>{list.votes[3]} votes</div>
+                </Box>
+                <Box style={{ marginBottom: "0.2rem"}}>
+                    5. {list.items[4]}<br/>
+                    <div style={{fontSize:"20px"}}>{list.votes[4]} votes</div>
+                </Box>
+            </List>
+    }
+    //base List for unpublished lists
     let cardElement =
         <ListItem
             id={list._id}
@@ -167,7 +211,7 @@ function ListCard(props) {
         style={{
             fontSize: '20pt',
             width: '100%',
-            height: "300pt",
+            height: "325pt",
             borderRadius: "20px",
             backgroundColor: "#d4d4f5"
         }}
@@ -189,23 +233,7 @@ function ListCard(props) {
                 </div>
                 <Box display="flex" justifyContent="space-between" style={{top:"5%"}}>
                     <Box style={{backgroundColor:"#e0e0e0", width:"50%", borderRadius: "20px"}}>
-                    <List style={{fontSize:"30px"}}>
-                        <Box style={{ marginBottom: "1rem"}}>
-                            1. {list.items[0]}
-                        </Box>
-                        <Box style={{ marginBottom: "1rem"}}>
-                            2. {list.items[1]}
-                        </Box>
-                        <Box style={{ marginBottom: "1rem"}}>
-                            3. {list.items[2]}
-                        </Box>
-                        <Box style={{ marginBottom: "1rem"}}>
-                            4. {list.items[3]}
-                        </Box>
-                        <Box style={{ marginBottom: "1rem"}}>
-                            5. {list.items[4]}
-                        </Box>
-                    </List>
+                    {card}
                     </Box>
                     <Box style={{ width:"45%", display:"inline-block", left:"50%", overflowY: "scroll"}}>
                     <TextField 
@@ -217,9 +245,13 @@ function ListCard(props) {
 
                     </Box>
                 </Box>
-                <IconButton onClick={handleCloseList} aria-label='edit' style={{display:"absolute", left:"95%"}}>
-                    <KeyboardArrowUpIcon  style={{fontSize:'20pt'}} />
-                </IconButton>
+                {decider}
+                <Box style={{position:"absolute", left:"85%", marginRight:"auto"}}>
+                    Views : {list.views}
+                    <IconButton onClick={handleCloseList} aria-label='edit'>
+                        <KeyboardArrowUpIcon  style={{fontSize:'20pt'}} />
+                    </IconButton>
+                </Box>
         </Box>
     </ListItem>
 }

@@ -238,6 +238,26 @@ function GlobalStoreContextProvider(props) {
         store.updateCurrentList();
     }
 
+    store.increaseView = function (list){
+        list.views = list.views+1
+        if(store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+            async function viewIncrease(list){
+                const response = await api.updateCommunityListById(list._id, list);
+                if(response.data.success){
+                    store.changeToCommunity();
+                }
+            }
+            viewIncrease(list);
+        }else{
+            async function viewIncrease(list){
+                const response = await api.updateTop5ListById(list._id, list);
+                if(response.data.success){
+                    store.loadIdNamePairs();
+                }
+            }
+            viewIncrease(list);
+        }
+    }
     store.changeToHome = function (){
         store.loadIdNamePairs()
     }
@@ -328,7 +348,7 @@ function GlobalStoreContextProvider(props) {
         let theList = 1
         if(store.communityLists.length > 0 ){
             for(let i=0; i<store.communityLists.length; i++){
-                if(store.communityLists[i] === tempList.name){
+                if(store.communityLists[i].name === tempList.name){
                     theList = store.communityLists[i]
                 }
             }
