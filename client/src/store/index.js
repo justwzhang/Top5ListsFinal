@@ -270,16 +270,74 @@ function GlobalStoreContextProvider(props) {
         store.updateCurrentList();
     }
 
-    store.sortDate = function(){
-
-    }
-
     store.sortPublishNew = function(){
-
+        let listOfDatesListPairs =[]
+        let publishedLists = []
+        let unPublishedLists = []
+        for(let i=0; i<store.viewedLists.length; i++){
+            if(store.viewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+                listOfDatesListPairs = [...listOfDatesListPairs, {list: store.viewedLists[i],date: new Date(store.viewedLists[i].date[2], store.viewedLists[i].date[0], store.viewedLists[i].date[1])}];
+                //publishedLists = [...publishedLists, store.viewedLists[i]]
+            }else{
+                unPublishedLists = [...unPublishedLists, store.viewedLists[i]]
+            }
+        }
+        listOfDatesListPairs.sort(function(a,b){
+            return a.date - b.date;
+        })
+        let newLists = listOfDatesListPairs.map((pair)=>{
+            return pair.list;
+        });
+        newLists = [...newLists, ...unPublishedLists];
+        if(store.loadedPage !== LoadedPageType.COMMUNITY_LISTS){
+            storeReducer({
+                type: GlobalStoreActionType.SORT,
+                payload: newLists
+            });
+        }else{
+            storeReducer({
+                type: GlobalStoreActionType.CHANGE_PAGE,
+                payload: {
+                    viewedLists:newLists,
+                    page: LoadedPageType.COMMUNITY_LISTS
+                }
+            });
+        }
     }
 
     store.sortPublishOld = function(){
-        
+        let listOfDatesListPairs =[]
+        let publishedLists = []
+        let unPublishedLists = []
+        for(let i=0; i<store.viewedLists.length; i++){
+            if(store.viewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+                listOfDatesListPairs = [...listOfDatesListPairs, {list: store.viewedLists[i],date: new Date(store.viewedLists[i].date[2], store.viewedLists[i].date[0], store.viewedLists[i].date[1])}];
+                //publishedLists = [...publishedLists, store.viewedLists[i]]
+            }else{
+                unPublishedLists = [...unPublishedLists, store.viewedLists[i]]
+            }
+        }
+        listOfDatesListPairs.sort(function(a,b){
+            return  b.date - a.date ;
+        })
+        let newLists = listOfDatesListPairs.map((pair)=>{
+            return pair.list;
+        });
+        newLists = [...newLists, ...unPublishedLists];
+        if(store.loadedPage !== LoadedPageType.COMMUNITY_LISTS){
+            storeReducer({
+                type: GlobalStoreActionType.SORT,
+                payload: newLists
+            });
+        }else{
+            storeReducer({
+                type: GlobalStoreActionType.CHANGE_PAGE,
+                payload: {
+                    viewedLists:newLists,
+                    page: LoadedPageType.COMMUNITY_LISTS
+                }
+            });
+        }
     }
 
     store.sortViews = function(){
