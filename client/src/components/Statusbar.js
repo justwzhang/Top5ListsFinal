@@ -16,24 +16,29 @@ function Statusbar() {
     function handleCreateNewList() {
         store.createNewList();
     }
-    let text ="";
-    if (store.currentList)
-        text = store.currentList.name;
-    
+    let text =
+    <div><IconButton 
+        aria-label="add"
+        id="add-list-button"
+        onClick={handleCreateNewList}
+        disabled = {store.currentList}
+        >
+            <AddIcon  style ={{
+                fontSize: "40pt"
+            }}/>
+        </IconButton>
+        Your Lists
+    </div>;
+    if (store.loadedPage === "COMMUNITY_LISTS")
+        text = "Community Lists";
+    else if(store.loadedPage === "USERS_LISTS")
+        text = "Users Lists"
+    else if(store.loadedPage === "ALL_LISTS")
+        text = "All Lists"
     let statusbar = <div id="top5-statusbar"></div>
     if(auth.loggedIn){
         statusbar = <div id="top5-statusbar">
-            <IconButton 
-            aria-label="add"
-            id="add-list-button"
-            onClick={handleCreateNewList}
-            disabled = {store.currentList}
-            >
-                <AddIcon  style ={{
-                    fontSize: "40pt"
-                }}/>
-            </IconButton>
-            Your Lists
+            {text}
         </div>
     }else{
         statusbar = <div></div>
