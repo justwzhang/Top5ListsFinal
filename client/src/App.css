@@ -155,6 +155,31 @@ body {
   justify-content: center;
 }
 
+#open-list-left {
+  position: absolute;
+  left: 1%;
+  top: 3%;
+  width: 80%;
+  height: 10%;
+  text-align: left;
+  font-size: 20pt;
+  display: inline;
+  align-items: left;
+  justify-content: center;
+}
+#open-list-right {
+  position: absolute;
+  left: 80%;
+  top: 3%;
+  width: 20%;
+  height: 10%;
+  text-align: left;
+  font-size: 24pt;
+  display: flex;
+  align-items: right;
+  justify-content: center;
+}
+
 #add-list-button {
   float: left;
 }
