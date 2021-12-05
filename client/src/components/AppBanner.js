@@ -79,7 +79,7 @@ export default function AppBanner() {
     
     function getAccountMenu(loggedIn) {
         
-        if(loggedIn){
+        if(loggedIn && !auth.isGuest){
             let user = auth.user;
             let firstnameinital = user.firstName.substring(0,1).toUpperCase();
             let lastnameinitial = user.lastName.substring(0,1).toUpperCase();

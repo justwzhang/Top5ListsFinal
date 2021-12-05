@@ -992,6 +992,9 @@ function GlobalStoreContextProvider(props) {
                             community:communityList
                         }
                     });
+                    if(auth.isGuest){
+                        store.changeToAllLists();
+                    }
                 }
             }catch(err2){
                 console.log("error")
@@ -1003,6 +1006,9 @@ function GlobalStoreContextProvider(props) {
                         community:[]
                     }
                 });
+                if(auth.isGuest){
+                    store.changeToAllLists();
+                }
             }
         }
         else {

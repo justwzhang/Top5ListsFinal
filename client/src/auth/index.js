@@ -12,6 +12,7 @@ export const AuthActionType = {
     LOGIN_USER: "LOGIN_USER",
     SET_ERROR: "SET_ERROR",
     LOGOUT_USER: "LOGOUT_USER",
+    LOGOUT_USER_GUEST: "LOGOUT_USER_GUEST"
 }
 
 function AuthContextProvider(props) {
@@ -27,6 +28,7 @@ function AuthContextProvider(props) {
     useEffect(() => {
         if(auth.loggedIn)
             auth.getLoggedIn();
+            auth.createGuest();
     }, []);
 
     const authReducer = (action) => {
@@ -77,8 +79,57 @@ function AuthContextProvider(props) {
                     isGuest: false
                 });
             }
+            case AuthActionType.LOGIN_USER_GUEST:{
+                return setAuth({
+                    user:payload.user,
+                    loggedIn: true,
+                    errorMessage: null,
+                    error:false,
+                    isGuest: true
+                });
+            }
             default:
                 return auth;
+        }
+    }
+
+    auth.continueAsGuest= async function(userInfo, store){
+        try{
+            const response = await api.loginUser(userInfo);
+            if (response.status === 200){
+                authReducer({
+                    type:AuthActionType.LOGIN_USER_GUEST,
+                    payload:{
+                        user:response.data.user
+                    }
+                })
+                history.push("/");
+                store.loadIdNamePairs();
+            }
+        }catch(err){
+            authReducer({
+                type: AuthActionType.SET_ERROR,
+                payload: {
+                    errorMessage: err.response.data.errorMessage,
+                    error: true
+                }
+            });
+        }
+    }
+
+    auth.createGuest = async function(){
+        let guest = {
+            firstName: "Guest",
+            lastName: "Guest",
+            user: "Guest",
+            email: "Guest@guest.com",
+            password: "password",
+            passwordVerify: "password"
+        }
+        try{
+            const response = await api.registerUser(guest);
+        }catch(err){
+            
         }
     }
 

@@ -17,6 +17,11 @@ export default function SplashScreen() {
         history.push("/register/");
     }
     function guest(){
+        const user = {
+            email: "Guest@guest.com",
+            password: "password"
+        }
+        auth.continueAsGuest(user, store)
 
     }
     return (

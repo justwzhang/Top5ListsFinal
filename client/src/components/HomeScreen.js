@@ -204,7 +204,7 @@ const HomeScreen = () => {
         <div id="top5-list-selector">
            <div id="list-selector-heading-left">
                <DeleteModal/>
-               <IconButton disabled = {store.currentList} onClick = {handleHome}>
+               <IconButton disabled = {store.currentList || auth.isGuest} onClick = {handleHome}>
                     <HomeIcon style ={{
                     fontSize: "35pt"
                 }}/>

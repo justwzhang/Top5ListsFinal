@@ -122,19 +122,19 @@ function ListCard(props) {
     }
 
     let likeButton =
-    <IconButton onClick={handleToggleLike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || disliked}>
+    <IconButton onClick={handleToggleLike} aria-label='edit' disabled={(!list.published && store.loadedPage !== "COMMUNITY_LISTS" || disliked) || auth.isGuest}>
         <ThumbUpOffAltIcon style={{fontSize:'30pt'}} />
         <div style={{fontSize: '10pt'}}>{list.likes}</div>
     </IconButton>
 
     let dislikeButton = 
-    <IconButton onClick={handleToggleDislike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || liked}>
+    <IconButton onClick={handleToggleDislike} aria-label='edit' disabled={(!list.published && store.loadedPage !== "COMMUNITY_LISTS" || liked) || auth.isGuest}>
         <ThumbDownOffAltIcon style={{fontSize:'30pt'}} />
         <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
     </IconButton>
     if(liked){
         likeButton =
-    <IconButton onClick={handleToggleLike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || disliked}>
+    <IconButton onClick={handleToggleLike} aria-label='edit' disabled={(!list.published && store.loadedPage !== "COMMUNITY_LISTS" || disliked) || auth.isGuest}>
         <ThumbUpAltIcon style={{fontSize:'30pt'}} />
         <div style={{fontSize: '10pt'}}>{list.likes}</div>
     </IconButton>
@@ -142,14 +142,14 @@ function ListCard(props) {
 
     if(disliked){
         dislikeButton = 
-        <IconButton onClick={handleToggleDislike} aria-label='edit' disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || liked}>
+        <IconButton onClick={handleToggleDislike} aria-label='edit' disabled={(!list.published && store.loadedPage !== "COMMUNITY_LISTS" || liked) || auth.isGuest}>
             <ThumbDownAltIcon style={{fontSize:'30pt'}} />
             <div style={{fontSize: '10pt'}}>{list.dislikes}</div>
         </IconButton>
     }
     let createdBy = <div style={{fontSize: '10pt'}}>By: {list.ownerUser}</div>
     let deleteButton = 
-    <IconButton onClick={(event) => {handleDeleteList(event, list._id)}} aria-label='delete'>
+    <IconButton onClick={(event) => {handleDeleteList(event, list._id)}} aria-label='delete' disabled ={auth.isGuest}>
         <DeleteIcon style={{fontSize:'30pt'}} />
     </IconButton>
     if(store.loadedPage === "COMMUNITY_LISTS"||store.loadedPage === "USERS_LISTS"||store.loadedPage === "ALL_LISTS"){
@@ -264,7 +264,7 @@ function ListCard(props) {
                     {likeButton}
 
                     {dislikeButton}
-                    
+
                     {deleteButton}
                 </div>
                 <Box display="flex" justifyContent="space-between" style={{top:"20%", height:"60%", position:"absolute", width:"95%", maxWidth:"100%"}}>
@@ -276,7 +276,7 @@ function ListCard(props) {
                             label="Comment" 
                             size="small" 
                             value={text}
-                            disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS"}
+                            disabled={!list.published && store.loadedPage !== "COMMUNITY_LISTS" || auth.isGuest}
                             style ={{width: "90%", backgroundColor:"white"}}
                             onChange={handleUpdateText}
                             onKeyPress={handleKeyPress}>
