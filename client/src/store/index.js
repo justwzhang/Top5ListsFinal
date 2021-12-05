@@ -260,8 +260,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SORT: {
                 return setStore({
                     allLists: store.allLists,
-                    allViewedLists: payload,
-                    viewedLists: payload,
+                    allViewedLists: payload.all,
+                    viewedLists: payload.viewedLists,
                     communityLists:store.communityLists,
                     currentList: null,
                     newListCounter: store.newListCounter,
@@ -418,56 +418,74 @@ function GlobalStoreContextProvider(props) {
         let newLists = listOfDatesListPairs.map((pair)=>{
             return pair.list;
         });
-        newLists = [...newLists, ...unPublishedLists];
-        if(store.loadedPage !== LoadedPageType.COMMUNITY_LISTS){
-            storeReducer({
-                type: GlobalStoreActionType.SORT,
-                payload: newLists
-            });
-        }else{
-            storeReducer({
-                type: GlobalStoreActionType.CHANGE_PAGE,
-                payload: {
-                    viewedLists:newLists,
-                    page: LoadedPageType.COMMUNITY_LISTS
-                }
-            });
+        let newViewedLists = [...newLists, ...unPublishedLists];
+        //now do totals
+        listOfDatesListPairs =[]
+        unPublishedLists = []
+        for(let i=0; i<store.allViewedLists.length; i++){
+            if(store.allViewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+                listOfDatesListPairs = [...listOfDatesListPairs, {list: store.allViewedLists[i],date: new Date(store.allViewedLists[i].date[2], store.allViewedLists[i].date[0], store.allViewedLists[i].date[1])}];
+            }else{
+                unPublishedLists = [...unPublishedLists, store.allViewedLists[i]]
+            }
         }
+        listOfDatesListPairs.sort(function(a,b){
+            return  b.date- a.date;
+        })
+        let allNewLists = listOfDatesListPairs.map((pair)=>{
+            return pair.list;
+        });
+        let newAllViewedLists = [...allNewLists, ...unPublishedLists];
+        storeReducer({
+            type: GlobalStoreActionType.SORT,
+            payload: {
+                all: newAllViewedLists,
+                viewedLists: newViewedLists
+            }
+        });
     }
 
     store.sortPublishOld = function(){
         let listOfDatesListPairs =[]
-        let publishedLists = []
         let unPublishedLists = []
         for(let i=0; i<store.viewedLists.length; i++){
             if(store.viewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
                 listOfDatesListPairs = [...listOfDatesListPairs, {list: store.viewedLists[i],date: new Date(store.viewedLists[i].date[2], store.viewedLists[i].date[0], store.viewedLists[i].date[1])}];
-                //publishedLists = [...publishedLists, store.viewedLists[i]]
             }else{
                 unPublishedLists = [...unPublishedLists, store.viewedLists[i]]
             }
         }
         listOfDatesListPairs.sort(function(a,b){
-            return   a.date -b.date;
+            return a.date- b.date;
         })
         let newLists = listOfDatesListPairs.map((pair)=>{
             return pair.list;
         });
-        newLists = [...newLists, ...unPublishedLists];
-        if(store.loadedPage !== LoadedPageType.COMMUNITY_LISTS){
-            storeReducer({
-                type: GlobalStoreActionType.SORT,
-                payload: newLists
-            });
-        }else{
-            storeReducer({
-                type: GlobalStoreActionType.CHANGE_PAGE,
-                payload: {
-                    viewedLists:newLists,
-                    page: LoadedPageType.COMMUNITY_LISTS
-                }
-            });
+        let newViewedLists = [...newLists, ...unPublishedLists];
+        //now do totals
+        listOfDatesListPairs =[]
+        unPublishedLists = []
+        for(let i=0; i<store.allViewedLists.length; i++){
+            if(store.allViewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+                listOfDatesListPairs = [...listOfDatesListPairs, {list: store.allViewedLists[i],date: new Date(store.allViewedLists[i].date[2], store.allViewedLists[i].date[0], store.allViewedLists[i].date[1])}];
+            }else{
+                unPublishedLists = [...unPublishedLists, store.allViewedLists[i]]
+            }
         }
+        listOfDatesListPairs.sort(function(a,b){
+            return  a.date- b.date;
+        })
+        let allNewLists = listOfDatesListPairs.map((pair)=>{
+            return pair.list;
+        });
+        let newAllViewedLists = [...allNewLists, ...unPublishedLists];
+        storeReducer({
+            type: GlobalStoreActionType.SORT,
+            payload: {
+                all: newAllViewedLists,
+                viewedLists: newViewedLists
+            }
+        });
     }
 
     store.sortViews = function(){
@@ -484,20 +502,27 @@ function GlobalStoreContextProvider(props) {
         }
         let newLists = store.sortNumerical(publishedLists, listOfViews)
         newLists = [...newLists, ...unPublishedLists];
-        if(store.loadedPage !== LoadedPageType.COMMUNITY_LISTS){
-            storeReducer({
-                type: GlobalStoreActionType.SORT,
-                payload: newLists
-            });
-        }else{
-            storeReducer({
-                type: GlobalStoreActionType.CHANGE_PAGE,
-                payload: {
-                    viewedLists:newLists,
-                    page: LoadedPageType.COMMUNITY_LISTS
-                }
-            });
+
+        listOfViews =[]
+        publishedLists = []
+        unPublishedLists = []
+        for(let i=0; i<store.allViewedLists.length; i++){
+            if(store.allViewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+                listOfViews = [...listOfViews, store.allViewedLists[i].views];
+                publishedLists = [...publishedLists, store.allViewedLists[i]]
+            }else{
+                unPublishedLists = [...unPublishedLists, store.allViewedLists[i]]
+            }
         }
+        let allnewLists = store.sortNumerical(publishedLists, listOfViews)
+        allnewLists = [...allnewLists, ...unPublishedLists];
+        storeReducer({
+            type: GlobalStoreActionType.SORT,
+            payload: {
+                all: allnewLists,
+                viewedLists:newLists
+            }
+        });
     }
 
     store.sortLikes = function(){
@@ -514,20 +539,27 @@ function GlobalStoreContextProvider(props) {
         }
         let newLists = store.sortNumerical(publishedLists, listOfLikes)
         newLists = [...newLists, ...unPublishedLists];
-        if(store.loadedPage !== LoadedPageType.COMMUNITY_LISTS){
-            storeReducer({
-                type: GlobalStoreActionType.SORT,
-                payload: newLists
-            });
-        }else{
-            storeReducer({
-                type: GlobalStoreActionType.CHANGE_PAGE,
-                payload: {
-                    viewedLists:newLists,
-                    page: LoadedPageType.COMMUNITY_LISTS
-                }
-            });
+
+        listOfLikes =[]
+        publishedLists = []
+        unPublishedLists = []
+        for(let i=0; i<store.allViewedLists.length; i++){
+            if(store.allViewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+                listOfLikes = [...listOfLikes, store.allViewedLists[i].likes];
+                publishedLists = [...publishedLists, store.allViewedLists[i]]
+            }else{
+                unPublishedLists = [...unPublishedLists, store.allViewedLists[i]]
+            }
         }
+        let allnewLists = store.sortNumerical(publishedLists, listOfLikes)
+        allnewLists = [...allnewLists, ...unPublishedLists];
+        storeReducer({
+            type: GlobalStoreActionType.SORT,
+            payload: {
+                all: allnewLists,
+                viewedLists:newLists
+            }
+        });
     }
 
     store.sortDislikes = function(){
@@ -544,20 +576,27 @@ function GlobalStoreContextProvider(props) {
         }
         let newLists = store.sortNumerical(publishedLists, listOfDislikes)
         newLists = [...newLists, ...unPublishedLists];
-        if(store.loadedPage !== LoadedPageType.COMMUNITY_LISTS){
-            storeReducer({
-                type: GlobalStoreActionType.SORT,
-                payload: newLists
-            });
-        }else{
-            storeReducer({
-                type: GlobalStoreActionType.CHANGE_PAGE,
-                payload: {
-                    viewedLists:newLists,
-                    page: LoadedPageType.COMMUNITY_LISTS
-                }
-            });
+
+        listOfDislikes =[]
+        publishedLists = []
+        unPublishedLists = []
+        for(let i=0; i<store.allViewedLists.length; i++){
+            if(store.allViewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+                listOfDislikes = [...listOfDislikes, store.allViewedLists[i].dislikes];
+                publishedLists = [...publishedLists, store.allViewedLists[i]]
+            }else{
+                unPublishedLists = [...unPublishedLists, store.allViewedLists[i]]
+            }
         }
+        let allnewLists = store.sortNumerical(publishedLists, listOfDislikes)
+        allnewLists = [...allnewLists, ...unPublishedLists];
+        storeReducer({
+            type: GlobalStoreActionType.SORT,
+            payload: {
+                all: allnewLists,
+                viewedLists:newLists
+            }
+        });
     }
     store.sortNumerical = function(listOfLists, valueArray){
         for(let i=0; i<valueArray.length; i++){
