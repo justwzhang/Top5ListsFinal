@@ -413,7 +413,7 @@ function GlobalStoreContextProvider(props) {
             }
         }
         listOfDatesListPairs.sort(function(a,b){
-            return a.date - b.date;
+            return  b.date- a.date;
         })
         let newLists = listOfDatesListPairs.map((pair)=>{
             return pair.list;
@@ -448,7 +448,7 @@ function GlobalStoreContextProvider(props) {
             }
         }
         listOfDatesListPairs.sort(function(a,b){
-            return  b.date - a.date ;
+            return   a.date -b.date;
         })
         let newLists = listOfDatesListPairs.map((pair)=>{
             return pair.list;
