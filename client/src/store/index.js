@@ -241,7 +241,7 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: store.listMarkedForDeletion,
                     isDeleteModalOpen: store.isDeleteModalOpen,
                     publishable: false,
-                    loadedPage: store.page
+                    loadedPage: store.loadedPage
                 });
             }
             case GlobalStoreActionType.SORT: {
@@ -256,7 +256,7 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null,
                     isDeleteModalOpen: false,
                     publishable: false,
-                    loadedPage: store.page
+                    loadedPage: store.loadedPage
                 });
             }
             default:
@@ -270,14 +270,100 @@ function GlobalStoreContextProvider(props) {
         store.updateCurrentList();
     }
 
+    store.search = function(text){
+        text = text.toLowerCase();
+        if(store.loadedPage === LoadedPageType.HOME_LISTS){
+            if(text === ""){
+                store.loadIdNamePairs()
+                return
+            }
+            let newList = [];
+            let currentViewedTotal = store.allLists;
+            for(let i=0; i<currentViewedTotal.length; i++){
+                let current = currentViewedTotal[i]
+                if(current.ownerUser !== auth.user.userName){
+                    continue;
+                }
+                for(let j=0; j<text.length; j++){
+                    let name = current.name.toLowerCase();
+                    if(name[j] !== text[j]){
+                        break;
+                    }
+                    if(name[j] === text[j] && j === text.length-1){
+                        newList = [...newList, current]
+                    }
+                }
+            }
+            storeReducer({
+                type: GlobalStoreActionType.SORT,
+                payload: newList
+            });
+        }else if(store.loadedPage === LoadedPageType.ALL_LISTS){
+            if(text === ""){
+                store.changeToAllLists()
+                return
+            }
+            let newList = [];
+            let currentViewedTotal = store.allLists;
+            for(let i=0; i<currentViewedTotal.length; i++){
+                let current = currentViewedTotal[i]
+                if(current.name.toLowerCase() === text && current.published){
+                    newList = [...newList, current];
+                }
+            }
+            storeReducer({
+                type: GlobalStoreActionType.SORT,
+                payload: newList
+            });
+        }else if(store.loadedPage === LoadedPageType.USERS_LISTS){
+            if(text === ""){
+                store.changeToUsers()
+                return;
+            }
+            let newList = [];
+            let currentViewedTotal = store.allLists;
+            for(let i=0; i<currentViewedTotal.length; i++){
+                let current = currentViewedTotal[i]
+                if(current.ownerUser.toLowerCase() === text && current.published){
+                    newList = [...newList, current];
+                }
+            }
+            storeReducer({
+                type: GlobalStoreActionType.SORT,
+                payload: newList
+            });
+        }else if(store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+            if(text === ""){
+                store.changeToCommunity()
+                return
+            }
+            let newList = [];
+            let currentViewedTotal = store.communityLists;
+            for(let i=0; i<currentViewedTotal.length; i++){
+                let current = currentViewedTotal[i]
+                for(let j=0; j<text.length; j++){
+                    let name = current.name.toLowerCase();
+                    if(name[j] !== text[j]){
+                        break;
+                    }
+                    if(name[j] === text[j] && j === text.length-1){
+                        newList = [...newList, current]
+                    }
+                }
+            }
+            storeReducer({
+                type: GlobalStoreActionType.SORT,
+                payload: newList
+            });
+        }
+    }
+
     store.sortPublishNew = function(){
         let listOfDatesListPairs =[]
-        let publishedLists = []
         let unPublishedLists = []
         for(let i=0; i<store.viewedLists.length; i++){
             if(store.viewedLists[i].published || store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
                 listOfDatesListPairs = [...listOfDatesListPairs, {list: store.viewedLists[i],date: new Date(store.viewedLists[i].date[2], store.viewedLists[i].date[0], store.viewedLists[i].date[1])}];
-                //publishedLists = [...publishedLists, store.viewedLists[i]]
             }else{
                 unPublishedLists = [...unPublishedLists, store.viewedLists[i]]
             }

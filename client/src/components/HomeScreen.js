@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
-import { Fab, Typography } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -57,7 +55,6 @@ const HomeScreen = () => {
 
     const handleProfileMenuOpen = (event) =>{
         setAnchorEl(event.currentTarget);
-        // console.log("ssssssssss")
     };
 
     function handleMenuClose() {
@@ -82,6 +79,10 @@ const HomeScreen = () => {
     function sortDislikes(){
         setAnchorEl(null);
         store.sortDislikes();
+    }
+    function handleUpdateSearchText(event){
+        let text = event.target.value;
+        store.search(text)
     }
     const menu = (
         <Menu
@@ -122,7 +123,7 @@ const HomeScreen = () => {
                         />
                     ))
                 }
-                </List>;
+                </List>
             </div>
     }
     //for editing a single list
@@ -223,7 +224,13 @@ const HomeScreen = () => {
                     fontSize: "35pt"
                 }}/>
                </IconButton>
-               <TextField label="Search" size="small" style ={{width: 600, backgroundColor:"white", top: "15%"}} disabled = {store.currentList}></TextField>
+               <TextField 
+                    label="Search" 
+                    size="small" 
+                    style ={{width: 600, backgroundColor:"white", top: "15%"}} 
+                    disabled = {store.currentList}
+                    onChange={handleUpdateSearchText}>
+                    </TextField>
         
             </div>
             <div id="list-selector-heading-right">
