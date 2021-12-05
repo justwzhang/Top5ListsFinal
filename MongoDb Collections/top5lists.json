@@ -1,0 +1,354 @@
+[{
+  "_id": {
+    "$oid": "61abdfb76abd2967005b2195"
+  },
+  "items": [
+    "a1",
+    "1",
+    "2",
+    "3",
+    "4"
+  ],
+  "date": [
+    11,
+    4,
+    2021
+  ],
+  "peopleLiked": [
+    "ThatGuy"
+  ],
+  "peopleDisliked": [],
+  "commentsUser": [
+    "JustZhang",
+    "ThatGuy",
+    "ThatGuy"
+  ],
+  "commentsString": [
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "Comment 2",
+    "Nice List"
+  ],
+  "name": "Untitled0",
+  "ownerUser": "JustZhang",
+  "views": 15,
+  "likes": 1,
+  "dislikes": 0,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-04T21:37:59.428Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:33:17.567Z"
+  },
+  "__v": 49
+},{
+  "_id": {
+    "$oid": "61abe26e6abd2967005b2285"
+  },
+  "items": [
+    "a",
+    "s",
+    "d",
+    "f",
+    "g"
+  ],
+  "date": [
+    11,
+    4,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled4",
+  "ownerUser": "JustZhang",
+  "views": 0,
+  "likes": 0,
+  "dislikes": 0,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-04T21:49:34.356Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T19:43:10.909Z"
+  },
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "61abf0866abd2967005b2485"
+  },
+  "items": [
+    "temp2",
+    "121212",
+    "ewrwe",
+    "1",
+    "sgafgsd"
+  ],
+  "date": [
+    11,
+    4,
+    2021
+  ],
+  "peopleLiked": [
+    "tester",
+    "JustZhang"
+  ],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled0",
+  "ownerUser": "JustZhang",
+  "views": 4,
+  "likes": 2,
+  "dislikes": 0,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-04T22:49:42.353Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-04T23:26:34.324Z"
+  },
+  "__v": 5
+},{
+  "_id": {
+    "$oid": "61abf09d6abd2967005b24a7"
+  },
+  "items": [
+    "sdafag",
+    "afgafdhzvc",
+    "zdfgfg",
+    "zcbb",
+    "zzvbbz"
+  ],
+  "date": [
+    11,
+    4,
+    2021
+  ],
+  "peopleLiked": [
+    "JustZhang"
+  ],
+  "peopleDisliked": [
+    "tester"
+  ],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled1",
+  "ownerUser": "JustZhang",
+  "views": 6,
+  "likes": 1,
+  "dislikes": 1,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-04T22:50:05.374Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T03:40:25.529Z"
+  },
+  "__v": 5
+},{
+  "_id": {
+    "$oid": "61ac30e87731e42434338d2b"
+  },
+  "items": [
+    "Java",
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "C++"
+  ],
+  "date": [
+    11,
+    4,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Languages",
+  "ownerUser": "ThatGuy",
+  "views": 1,
+  "likes": 0,
+  "dislikes": 0,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-05T03:24:24.797Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T03:35:39.475Z"
+  },
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "61ad16564318720674e1e3ea"
+  },
+  "items": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled10",
+  "ownerUser": "JustZhang",
+  "views": 0,
+  "likes": 0,
+  "dislikes": 0,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-05T19:43:18.103Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T19:43:26.271Z"
+  },
+  "__v": 1
+},{
+  "_id": {
+    "$oid": "61ad20d14318720674e1e476"
+  },
+  "items": [
+    "aa",
+    "as",
+    "ad",
+    "af",
+    "afa"
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled0a",
+  "ownerUser": "JustZhang",
+  "views": 0,
+  "likes": 0,
+  "dislikes": 0,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-05T20:28:01.982Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:28:29.250Z"
+  },
+  "__v": 2
+},{
+  "_id": {
+    "$oid": "61ad20fa4318720674e1e492"
+  },
+  "items": [
+    "StarCraft",
+    "Fallout 3",
+    "League ofLegends",
+    "Call ofDuty",
+    "Diablo"
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [
+    "tester"
+  ],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Games",
+  "ownerUser": "JustZhang",
+  "views": 0,
+  "likes": 1,
+  "dislikes": 0,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-05T20:28:42.218Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:48:08.021Z"
+  },
+  "__v": 2
+},{
+  "_id": {
+    "$oid": "61ad211c4318720674e1e4a8"
+  },
+  "items": [
+    "StarCraft",
+    "Civilization II",
+    "Call ofDuty",
+    "Fallout 3",
+    "Super Mario World"
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [
+    "tester"
+  ],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Games",
+  "ownerUser": "tester",
+  "views": 1,
+  "likes": 0,
+  "dislikes": 1,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-05T20:29:16.845Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:48:15.435Z"
+  },
+  "__v": 2
+},{
+  "_id": {
+    "$oid": "61ad215b4318720674e1e4bc"
+  },
+  "items": [
+    "Super Mario World",
+    "Katamari Damacy",
+    "Civilization II",
+    "StarCraft",
+    "Fallout 3"
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [
+    "tester"
+  ],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Games",
+  "ownerUser": "ThatGuy",
+  "views": 0,
+  "likes": 0,
+  "dislikes": 1,
+  "published": true,
+  "createdAt": {
+    "$date": "2021-12-05T20:30:19.327Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:48:10.089Z"
+  },
+  "__v": 2
+}]

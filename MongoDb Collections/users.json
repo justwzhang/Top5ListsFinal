@@ -1,0 +1,65 @@
+[{
+  "_id": {
+    "$oid": "61a6bcba8263d20b702e4cb0"
+  },
+  "firstName": "justin",
+  "lastName": "zhang",
+  "user": "JustZhang",
+  "email": "justin.zhang.1@stonybrook.edu",
+  "passwordHash": "$2a$10$7N5cZdhyN263Q3ZrWHOUQebEgY1NUN6CLnpEpklyJbKfpywTiX76u",
+  "createdAt": {
+    "$date": "2021-12-01T00:07:22.996Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-01T00:07:22.996Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a863b10159e5720c54f5ef"
+  },
+  "firstName": "test",
+  "lastName": "test",
+  "user": "tester",
+  "email": "test@yahoo.com",
+  "passwordHash": "$2a$10$yXbR6P.laxWYcoUI.3rnyOspkX9c7c8mIZwE2LSXSa8ViAlnxex9a",
+  "createdAt": {
+    "$date": "2021-12-02T06:12:01.215Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-02T06:12:01.215Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ac26256abd2967005b26d4"
+  },
+  "firstName": "Guest",
+  "lastName": "Guest",
+  "user": "Guest",
+  "email": "Guest@guest.com",
+  "passwordHash": "$2a$10$F8izK3IB2qIw9aKg6EcSWu7oWrB0hlNvBLnHfV3e1j3iR8OLV263G",
+  "createdAt": {
+    "$date": "2021-12-05T02:38:29.981Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T02:38:29.981Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ac2ec37731e42434338ca7"
+  },
+  "firstName": "guy",
+  "lastName": "name",
+  "user": "ThatGuy",
+  "email": "email1@gmail.com",
+  "passwordHash": "$2a$10$MNc0SnbKTToTqQq/Tm5dCOc/pf0PCjnV9jaiuksRpuD17EcDh2JPK",
+  "createdAt": {
+    "$date": "2021-12-05T03:15:15.393Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T03:15:15.393Z"
+  },
+  "__v": 0
+}]

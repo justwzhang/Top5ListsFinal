@@ -1,0 +1,298 @@
+[{
+  "_id": {
+    "$oid": "61abdfbe6abd2967005b2198"
+  },
+  "items": [
+    "1",
+    "a1",
+    "temp2",
+    "121212",
+    "2",
+    "ewrwe",
+    "3",
+    "4",
+    "sgafgsd"
+  ],
+  "votes": [
+    6,
+    5,
+    5,
+    4,
+    3,
+    3,
+    2,
+    1,
+    1
+  ],
+  "date": [
+    11,
+    4,
+    2021
+  ],
+  "peopleLiked": [
+    "JustZhang",
+    "tester"
+  ],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled0",
+  "views": 7,
+  "likes": 2,
+  "dislikes": 0,
+  "createdAt": {
+    "$date": "2021-12-04T21:38:06.686Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:48:00.354Z"
+  },
+  "__v": 21
+},{
+  "_id": {
+    "$oid": "61abf0a26abd2967005b24aa"
+  },
+  "items": [
+    "sdafag",
+    "afgafdhzvc",
+    "zdfgfg",
+    "zcbb",
+    "zzvbbz"
+  ],
+  "votes": [
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  "date": [
+    11,
+    4,
+    2021
+  ],
+  "peopleLiked": [
+    "JustZhang"
+  ],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled1",
+  "views": 2,
+  "likes": 1,
+  "dislikes": 0,
+  "createdAt": {
+    "$date": "2021-12-04T22:50:10.457Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:47:53.858Z"
+  },
+  "__v": 3
+},{
+  "_id": {
+    "$oid": "61ac31357731e42434338d3c"
+  },
+  "items": [
+    "Java",
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "C++"
+  ],
+  "votes": [
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  "date": [
+    11,
+    4,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [
+    "JustZhang"
+  ],
+  "commentsUser": [
+    "JustZhang"
+  ],
+  "commentsString": [
+    "test"
+  ],
+  "name": "Languages",
+  "views": 3,
+  "likes": 0,
+  "dislikes": 1,
+  "createdAt": {
+    "$date": "2021-12-05T03:25:41.465Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:13:13.277Z"
+  },
+  "__v": 4
+},{
+  "_id": {
+    "$oid": "61ad164e4318720674e1e3e1"
+  },
+  "items": [
+    "a",
+    "s",
+    "d",
+    "f",
+    "g"
+  ],
+  "votes": [
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled4",
+  "views": 0,
+  "likes": 0,
+  "dislikes": 0,
+  "createdAt": {
+    "$date": "2021-12-05T19:43:10.898Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T19:43:10.898Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad165e4318720674e1e3ed"
+  },
+  "items": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ],
+  "votes": [
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled10",
+  "views": 0,
+  "likes": 0,
+  "dislikes": 0,
+  "createdAt": {
+    "$date": "2021-12-05T19:43:26.265Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T19:43:26.265Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad20ed4318720674e1e489"
+  },
+  "items": [
+    "aa",
+    "as",
+    "ad",
+    "af",
+    "afa"
+  ],
+  "votes": [
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [],
+  "peopleDisliked": [],
+  "commentsUser": [],
+  "commentsString": [],
+  "name": "Untitled0a",
+  "views": 0,
+  "likes": 0,
+  "dislikes": 0,
+  "createdAt": {
+    "$date": "2021-12-05T20:28:29.244Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:28:29.244Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad210f4318720674e1e495"
+  },
+  "items": [
+    "StarCraft",
+    "Fallout 3",
+    "Civilization II",
+    "Super Mario World",
+    "Call ofDuty",
+    "Katamari Damacy",
+    "League ofLegends",
+    "Diablo"
+  ],
+  "votes": [
+    12,
+    7,
+    7,
+    6,
+    5,
+    4,
+    3,
+    1
+  ],
+  "date": [
+    11,
+    5,
+    2021
+  ],
+  "peopleLiked": [
+    "JustZhang"
+  ],
+  "peopleDisliked": [],
+  "commentsUser": [
+    "tester"
+  ],
+  "commentsString": [
+    "COD best game"
+  ],
+  "name": "Games",
+  "views": 4,
+  "likes": 1,
+  "dislikes": 0,
+  "createdAt": {
+    "$date": "2021-12-05T20:29:03.967Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-05T20:56:00.920Z"
+  },
+  "__v": 4
+}]
