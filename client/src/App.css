@@ -54,7 +54,7 @@ body {
   border-radius: 10px;
 }
 #splash-screen {
-  background-image: linear-gradient(to bottom, #c4c4c4, #808080);
+  background-image: linear-gradient(to bottom, #c4c4c4, 	#353535);
   color: white;
   font-size: 30pt;
   border-color: black;
