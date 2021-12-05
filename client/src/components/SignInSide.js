@@ -29,13 +29,10 @@ export default function SignInSide() {
         // eslint-disable-next-line no-console
         const user = {
             email: data.get('email'),
-            password: data.get('password')
+            password: data.get('password'),
+            user: data.get('user')
         }
         auth.logInUser(user, store);
-        // console.log({
-        //     email: data.get('email'),
-        //     password: data.get('password'),
-        //     });
     };
 
     return (
@@ -65,6 +62,16 @@ export default function SignInSide() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="user"
+                  label="User Name"
+                  name="user"
+                  autoComplete="user"
                   autoFocus
                 />
                 <TextField

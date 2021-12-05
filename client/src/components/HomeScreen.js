@@ -227,7 +227,7 @@ const HomeScreen = () => {
                <TextField 
                     label="Search" 
                     size="small" 
-                    style ={{width: 600, backgroundColor:"white", top: "15%"}} 
+                    style ={{width: "50%", backgroundColor:"white", top: "15%"}} 
                     disabled = {store.currentList}
                     onChange={handleUpdateSearchText}>
                     </TextField>

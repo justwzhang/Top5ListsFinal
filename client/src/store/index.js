@@ -31,6 +31,7 @@ export const GlobalStoreActionType = {
     CHANGE_PAGE: "CHANGE_PAGE",
     UPDATE_COMMUNITY_LIST: "UPDATE_COMMUNITY_LIST",
     SORT:"SORT",
+    SEARCH:"SEARCH"
 }
 
 export const LoadedPageType = {
@@ -49,6 +50,7 @@ function GlobalStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [store, setStore] = useState({
         allLists: [],
+        allViewdLists: [],
         viewedLists: [],
         communityLists:[],
         currentList: null,
@@ -74,6 +76,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
                     allLists: payload.allLists,
+                    allViewdLists: payload.viewdLists,
                     viewedLists: payload.viewedLists,
                     communityLists:store.communityLists,
                     currentList: payload.top5List,
@@ -90,6 +93,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewdLists: store.allViewdLists,
                     viewedLists: store.viewedLists,
                     communityLists:store.communityLists,
                     currentList: null,
@@ -106,6 +110,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CREATE_NEW_LIST: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewedLists: store.allViewdLists,
                     viewedLists: store.viewedLists,
                     communityLists:store.communityLists,
                     currentList: payload,
@@ -122,6 +127,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOAD_ID_NAME_PAIRS: {
                 return setStore({
                     allLists: payload.allLists,
+                    allViewedLists: payload.owned,
                     viewedLists: payload.owned,
                     communityLists:payload.community,
                     currentList: null,
@@ -138,6 +144,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.MARK_LIST_FOR_DELETION: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewedLists: store.allViewdLists,
                     viewedLists: store.viewedLists,
                     communityLists:store.communityLists,
                     currentList: null,
@@ -154,6 +161,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.UNMARK_LIST_FOR_DELETION: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewedLists: store.allViewdLists,
                     viewedLists: store.viewedLists,
                     communityLists:store.communityLists,
                     currentList: null,
@@ -170,6 +178,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SET_CURRENT_LIST: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewedLists: store.allViewdLists,
                     viewedLists: store.viewedLists,
                     communityLists:store.communityLists,
                     currentList: payload.currentList,
@@ -186,6 +195,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SAVE_LIST: {
                 return setStore({
                     allLists: payload.allLists,
+                    allViewedLists: payload.owned,
                     viewedLists: payload.owned,
                     communityLists:store.communityLists,
                     currentList: null,
@@ -202,6 +212,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.PUBLISHABLE: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewedLists: store.allViewdLists,
                     viewedLists: store.viewedLists,
                     communityLists:store.communityLists,
                     currentList: store.currentList,
@@ -217,6 +228,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CHANGE_PAGE: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewedLists: payload.viewedLists,
                     viewedLists: payload.viewedLists,
                     communityLists:store.communityLists,
                     currentList: store.currentList,
@@ -232,6 +244,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.UPDATE_COMMUNITY_LIST: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewedLists: payload,
                     viewedLists: payload,
                     communityLists:payload,
                     currentList: store.currentList,
@@ -247,6 +260,23 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SORT: {
                 return setStore({
                     allLists: store.allLists,
+                    allViewedLists: payload,
+                    viewedLists: payload,
+                    communityLists:store.communityLists,
+                    currentList: null,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: true,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null,
+                    isDeleteModalOpen: false,
+                    publishable: false,
+                    loadedPage: store.loadedPage
+                });
+            }
+            case GlobalStoreActionType.SEARCH: {
+                return setStore({
+                    allLists: store.allLists,
+                    allViewedLists: store.allViewedLists,
                     viewedLists: payload,
                     communityLists:store.communityLists,
                     currentList: null,
@@ -273,12 +303,16 @@ function GlobalStoreContextProvider(props) {
     store.search = function(text){
         text = text.toLowerCase();
         if(store.loadedPage === LoadedPageType.HOME_LISTS){
+            
             if(text === ""){
-                store.loadIdNamePairs()
+                storeReducer({
+                    type: GlobalStoreActionType.SEARCH,
+                    payload: store.allViewedLists
+                });
                 return
             }
             let newList = [];
-            let currentViewedTotal = store.allLists;
+            let currentViewedTotal = store.allViewedLists;
             for(let i=0; i<currentViewedTotal.length; i++){
                 let current = currentViewedTotal[i]
                 if(current.ownerUser !== auth.user.userName){
@@ -295,16 +329,19 @@ function GlobalStoreContextProvider(props) {
                 }
             }
             storeReducer({
-                type: GlobalStoreActionType.SORT,
+                type: GlobalStoreActionType.SEARCH,
                 payload: newList
             });
         }else if(store.loadedPage === LoadedPageType.ALL_LISTS){
             if(text === ""){
-                store.changeToAllLists()
+                storeReducer({
+                    type: GlobalStoreActionType.SEARCH,
+                    payload: store.allViewedLists
+                });
                 return
             }
             let newList = [];
-            let currentViewedTotal = store.allLists;
+            let currentViewedTotal = store.allViewedLists;
             for(let i=0; i<currentViewedTotal.length; i++){
                 let current = currentViewedTotal[i]
                 if(current.name.toLowerCase() === text && current.published){
@@ -312,16 +349,19 @@ function GlobalStoreContextProvider(props) {
                 }
             }
             storeReducer({
-                type: GlobalStoreActionType.SORT,
+                type: GlobalStoreActionType.SEARCH,
                 payload: newList
             });
         }else if(store.loadedPage === LoadedPageType.USERS_LISTS){
             if(text === ""){
-                store.changeToUsers()
+                storeReducer({
+                    type: GlobalStoreActionType.SEARCH,
+                    payload: store.allViewedLists
+                });
                 return;
             }
             let newList = [];
-            let currentViewedTotal = store.allLists;
+            let currentViewedTotal = store.allViewedLists;
             for(let i=0; i<currentViewedTotal.length; i++){
                 let current = currentViewedTotal[i]
                 if(current.ownerUser.toLowerCase() === text && current.published){
@@ -329,16 +369,20 @@ function GlobalStoreContextProvider(props) {
                 }
             }
             storeReducer({
-                type: GlobalStoreActionType.SORT,
+                type: GlobalStoreActionType.SEARCH,
                 payload: newList
             });
         }else if(store.loadedPage === LoadedPageType.COMMUNITY_LISTS){
+            text = text.toLowerCase();
             if(text === ""){
-                store.changeToCommunity()
+                storeReducer({
+                    type: GlobalStoreActionType.SEARCH,
+                    payload: store.allViewedLists
+                });
                 return
             }
             let newList = [];
-            let currentViewedTotal = store.communityLists;
+            let currentViewedTotal = store.allViewedLists;
             for(let i=0; i<currentViewedTotal.length; i++){
                 let current = currentViewedTotal[i]
                 for(let j=0; j<text.length; j++){
@@ -352,7 +396,7 @@ function GlobalStoreContextProvider(props) {
                 }
             }
             storeReducer({
-                type: GlobalStoreActionType.SORT,
+                type: GlobalStoreActionType.SEARCH,
                 payload: newList
             });
         }
@@ -619,7 +663,7 @@ function GlobalStoreContextProvider(props) {
             async function comment(list, text){
                 const response = await api.updateCommunityListById(list._id, list);
                 if(response.data.success){
-                    store.changeToCommunity();
+                    //store.changeToCommunity();
                 }
             }
             comment(list, text);
@@ -627,7 +671,7 @@ function GlobalStoreContextProvider(props) {
             async function comment(list, text){
                 const response = await api.updateTop5ListById(list._id, list);
                 if(response.data.success){
-                    store.loadIdNamePairs();
+                    //store.loadIdNamePairs();
                 }
             }
             comment(list, text);
@@ -753,6 +797,9 @@ function GlobalStoreContextProvider(props) {
 
     store.publishCurrentList = function(){
         store.currentList.published = true;
+        const date = new Date()
+        const now = [date.getMonth(), date.getDate(), date.getFullYear()]
+        store.currentList.date = now
         let tempList = store.currentList;
         store.saveCurrentList();
         let theList = 1
@@ -883,6 +930,19 @@ function GlobalStoreContextProvider(props) {
         for(let i = 0; i < 5; i++){
             if(!regex.test(list.items[i].charAt(0))){
                 return false
+            }
+        }
+        for(let i=0; i<4;i++){
+            for(let j=i+1; j<5 ;j++){
+                if(list.items[i] === list.items[j])
+                    return false
+            }
+        }
+        for(let i=0; i<store.viewedLists.length; i++){
+            if(store.viewedLists[i]._id===list._id){
+                continue;
+            }else if(store.viewedLists[i].name === list.name){
+                return false;
             }
         }
         return true
@@ -1050,13 +1110,15 @@ function GlobalStoreContextProvider(props) {
                 let response = await api.deleteTop5ListById(listToDelete._id);
                 if (response.data.success) {
                     store.unmarkListForDeletion();
-                    store.removeFromCommunityList(listToDelete);
+                    if(listToDelete.published)
+                        store.removeFromCommunityList(listToDelete);
                     store.loadIdNamePairs();
                 }
             }catch(err){
                 store.unmarkListForDeletion();
+                if(listToDelete.published)
                     store.removeFromCommunityList(listToDelete);
-                    store.loadIdNamePairs();
+                store.loadIdNamePairs();
             }
         }else{
             store.unmarkListForDeletion();

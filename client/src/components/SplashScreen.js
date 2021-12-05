@@ -19,7 +19,8 @@ export default function SplashScreen() {
     function guest(){
         const user = {
             email: "Guest@guest.com",
-            password: "password"
+            password: "password",
+            user:"Guest"
         }
         auth.continueAsGuest(user, store)
 

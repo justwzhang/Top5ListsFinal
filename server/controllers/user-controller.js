@@ -10,15 +10,15 @@ logoutUser = async (req, res) => {
 }
 
 logInUser = async (req, res) => {
-    const{email, password} = req.body
-        if (!email || !password) {
+    const{email, password, user} = req.body
+        if (!email || !password || !user) {
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
         }
     try{
-        const{email, password} = req.body
-        if (!email || !password) {
+        const{email, password, user} = req.body
+        if (!email || !password|| !user) {
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
@@ -30,7 +30,7 @@ logInUser = async (req, res) => {
                     errorMessage: "Invalid password"
                 });
         }
-        const user = await User.findOne({email: email}, (err, user) => {
+        const theUser = await User.findOne({email: email}, (err, user) => {
             if(err){
                 return res
                     .status(404)
@@ -41,10 +41,15 @@ logInUser = async (req, res) => {
                 .status(400)
                 .json({errorMessage: "Email not registered"})
         })
-        bcrypt.compare(password, user.passwordHash, async function(err, result){
+        if(theUser.user !== user){
+            return res
+                .status(400)
+                .json({errorMessage: "Invalid User Name"})
+        }
+        bcrypt.compare(password, theUser.passwordHash, async function(err, result){
             if(result == true){
                 console.log("good");
-                const token = auth.signToken(user);
+                const token = auth.signToken(theUser);
                 await res.cookie("token", token, {
                     httpOnly: true,
                     secure: true,
@@ -52,10 +57,10 @@ logInUser = async (req, res) => {
                 }).status(200).json({
                     loggedIn: true,
                     user: {
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        email: user.email,
-                        userName: user.user
+                        firstName: theUser.firstName,
+                        lastName: theUser.lastName,
+                        email: theUser.email,
+                        userName: theUser.user
                     }
                 }).send();
             }else{
@@ -109,7 +114,7 @@ registerUser = async (req, res) => {
                 })
         }
         const existingUser = await User.findOne({ email: email });
-        //const existingUser2 = await User.findOne({ email: user });
+        const existingUser2 = await User.findOne({ user: user });
         if (existingUser) {
             return res
                 .status(400)
@@ -118,14 +123,14 @@ registerUser = async (req, res) => {
                     errorMessage: "An account with this email address already exists."
                 })
         }
-        // if (existingUser2) {
-        //     return res
-        //         .status(400)
-        //         .json({
-        //             success: false,
-        //             errorMessage: "An account with this user name already exists."
-        //         })
-        // }
+        if (existingUser2) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    errorMessage: "An account with this user name already exists."
+                })
+        }
         const saltRounds = 10;
         const salt = await bcrypt.genSalt(saltRounds);
         const passwordHash = await bcrypt.hash(password, salt);
