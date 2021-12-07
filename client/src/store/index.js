@@ -873,7 +873,10 @@ function GlobalStoreContextProvider(props) {
         async function updateCommunityListWithNew(list, comListId){
             let response = await api.getCommunityListById(comListId)
                 if(response.data.success){
+                    const date = new Date()
+                    const now = [date.getMonth(), date.getDate(), date.getFullYear()]
                     let comList = response.data.communityList
+                    comList.date = now;
                     let comListItems = comList.items
                     let comVotes = comList.votes
                     let newItems = list.items
